@@ -1,107 +1,55 @@
-# Colomer & Asociados · Web Premium + Colomer Hub Demo
+# Colomer Web + Hub Premium Demo · GitHub Pages
 
-Demo estática lista para subir a GitHub Pages.
+Demo estática para presentar una versión demostrativa de la web premium y el Colomer Hub.
 
-Incluye:
+## Qué incluye
 
-- `index.html`: web corporativa premium.
-- `hub.html`: área privada demo de Colomer Hub.
-- `styles.css`: diseño responsive premium en estilo navy, oro y azul tecnológico.
-- `app.js`: interacción, login demo, datos ficticios, bandeja documental y contador de 15 días.
-- `.nojekyll`: evita procesamiento Jekyll en GitHub Pages.
+- `index.html` — web corporativa premium demostrativa.
+- `hub.html` — Hub operativo premium demo.
+- `styles.css` — diseño premium navy, oro y azul tecnológico.
+- `app.js` — interacción demo, CRM local, subida simulada, lectura IA simulada y periodo de 15 días.
+- `.nojekyll` — evita problemas de publicación en GitHub Pages.
 
-## Credenciales de la demo
+## Credenciales demo del Hub
 
-- Email: `demo@colomerhub.es`
-- Clave: `demo2026`
+Email: `demo@colomerhub.es`  
+Clave: `demo2026`
 
-## Periodo de demostración de 15 días
+También hay botones rápidos para entrar como cliente o como equipo.
 
-La demo inicia el contador en el primer acceso desde cada navegador usando `localStorage`.
+## Periodo de 15 días
 
-Clave usada:
+El contador de 15 días se guarda en `localStorage` del navegador.
 
-```txt
-colomerDemoStartAt
-```
+Esto sirve para una demo comercial, pero **no es seguridad real**. Si el usuario borra caché, cambia de navegador o usa incógnito, el periodo puede reiniciarse.
 
-Cuando pasan 15 días, el Hub muestra una pantalla de demo finalizada.
+Para una versión real se necesita:
 
-También puedes reiniciar la demo de dos formas:
-
-1. Entrar en `hub.html?resetDemo=1`.
-2. Desde el Hub, pestaña **Demo y seguridad**, pulsar **Reiniciar demo en este navegador**.
-
-Importante: este bloqueo de 15 días es solo comercial y de demostración. No es seguridad real, no controla licencias de forma centralizada y puede reiniciarse si se borra el almacenamiento del navegador.
+- login seguro,
+- base de datos,
+- almacenamiento documental,
+- permisos y roles,
+- trazabilidad,
+- backups,
+- configuración de servidor,
+- revisión RGPD,
+- contratación de servicios externos a nombre del cliente.
 
 ## Cómo subir a GitHub Pages
 
-1. Crea un repositorio nuevo en GitHub, por ejemplo `colomer-web-hub-demo`.
-2. Sube estos archivos en la raíz del repositorio:
-   - `index.html`
-   - `hub.html`
-   - `styles.css`
-   - `app.js`
-   - `.nojekyll`
-   - `README.md`
+1. Crea un repositorio nuevo en GitHub.
+2. Sube estos archivos en la raíz del repositorio.
 3. Entra en **Settings > Pages**.
-4. En **Build and deployment**, elige:
+4. En **Build and deployment**, selecciona:
    - Source: `Deploy from a branch`
    - Branch: `main`
    - Folder: `/root`
-5. Guarda los cambios.
-6. GitHub generará una URL pública tipo:
+5. Guarda y espera a que GitHub publique la URL.
 
-```txt
-https://usuario.github.io/colomer-web-hub-demo/
-```
+## Notas de uso
 
-## Qué puede enseñarse en esta demo
-
-- Diseño premium de web corporativa.
-- Estructura de servicios.
-- Explicación de Colomer Hub.
-- Acceso privado simulado.
-- Panel operativo con KPIs ficticios.
-- Fichas de cliente demo.
-- Bandeja documental con estados.
-- Subida documental simulada.
-- Mensajes y avisos demo.
-- Periodo comercial de prueba de 15 días por navegador.
-
-## Qué NO debe venderse como versión real
-
-Esta demo no incluye:
-
-- login seguro real,
-- base de datos,
-- almacenamiento documental real,
-- permisos reales,
-- cifrado,
-- backups,
-- auditoría de actividad,
-- IA/OCR real,
-- email transaccional,
-- WhatsApp API,
-- integración contable,
-- cumplimiento RGPD completo,
-- control centralizado de licencias.
-
-## Recomendación para versión real
-
-Para usar datos reales de clientes, la versión profesional debería incluir:
-
-- autenticación segura,
-- roles y permisos,
-- base de datos,
-- almacenamiento documental,
-- cifrado y backups,
-- registros de actividad,
-- entorno cloud adecuado,
-- textos legales y revisión RGPD,
-- contrato de encargado de tratamiento si aplica,
-- costes externos contratados preferiblemente a nombre del cliente.
-
-## Costes externos
-
-Dominio, hosting, almacenamiento, servidores, base de datos, APIs, IA/OCR, email transaccional, herramientas cloud, licencias, textos legales y otros consumos de terceros no forman parte de esta demo y deberán presupuestarse aparte en la versión real.
+- Todos los datos son ficticios.
+- No se suben archivos reales.
+- La lectura IA está simulada para enseñar el flujo.
+- Los formularios guardan datos solo en el navegador.
+- En producción habría que conectar email, CRM, base de datos, almacenamiento y seguridad real.

@@ -3,274 +3,272 @@
 <head>
   <meta charset="utf-8">
   <meta name="viewport" content="width=device-width, initial-scale=1">
-  <title>Colomer Hub · Demo operativa 15 días</title>
-  <meta name="description" content="Demo premium de Hub operativo para Colomer & Asociados con periodo de demostración de 15 días.">
-  <meta name="theme-color" content="#000712">
+  <title>Colomer Hub · Demo premium 15 días</title>
+  <meta name="description" content="Demo premium del área privada Colomer Hub: CRM de leads, cliente, documentos, lectura IA simulada y dashboard.">
   <link rel="stylesheet" href="styles.css">
 </head>
-<body class="hub-page">
-  <div class="demo-topbar hub-bar" data-trial-banner>
-    <span class="pulse-dot"></span>
-    <strong>Colomer Hub · Demo 15 días</strong>
-    <span data-trial-text>Calculando periodo de demostración…</span>
-  </div>
-
-  <main class="hub-shell">
-    <section class="login-view" data-login-view>
-      <div class="login-brand reveal">
-        <a class="brand" href="index.html">
-          <span class="brand-mark">C</span>
-          <span>
-            <strong>Colomer Hub</strong>
-            <em>Área privada demo</em>
-          </span>
-        </a>
-        <h1>Accede a una muestra del área privada para clientes y equipo.</h1>
-        <p>
-          Demo funcional con datos ficticios. El periodo se activa al primer acceso y dura 15 días en este navegador.
-        </p>
-        <div class="credentials-box">
-          <strong>Credenciales demo</strong>
-          <span>Email: <code>demo@colomerhub.es</code></span>
-          <span>Clave: <code>demo2026</code></span>
-        </div>
-        <a href="index.html" class="text-link">← Volver a la web premium</a>
+<body data-page="hub" class="hub-body">
+  <div id="demoGate" class="demo-gate" hidden>
+    <div class="gate-card">
+      <span class="eyebrow">Prueba finalizada</span>
+      <h1>La demo de 15 días ha caducado</h1>
+      <p>Para activar la versión profesional, trabajar con datos reales, añadir seguridad, OCR real, IA documental o conexión contable, será necesario contratar la siguiente fase.</p>
+      <div class="gate-actions">
+        <button class="btn btn-primary" data-reset-demo>Reiniciar demo local</button>
+        <a class="btn btn-ghost" href="index.html">Volver a la web</a>
       </div>
-
-      <form class="login-card reveal delay-1" data-login-form>
-        <span class="eyebrow">Acceso privado</span>
-        <h2>Entrar al Hub</h2>
-        <label>
-          Email
-          <input type="email" name="email" value="demo@colomerhub.es" required>
-        </label>
-        <label>
-          Contraseña
-          <input type="password" name="password" value="demo2026" required>
-        </label>
-        <button class="btn btn-gold" type="submit">Acceder a la demo</button>
-        <p class="form-note">
-          Acceso simulado con localStorage. No es un login real ni debe usarse con datos sensibles.
-        </p>
-      </form>
-    </section>
-
-    <section class="app-view" data-app-view hidden>
-      <aside class="sidebar">
-        <a class="brand hub-brand" href="index.html">
-          <span class="brand-mark">C</span>
-          <span>
-            <strong>Colomer Hub</strong>
-            <em>Demo operativa</em>
-          </span>
-        </a>
-
-        <nav class="side-nav" aria-label="Navegación Hub">
-          <button class="active" type="button" data-tab-button="dashboard">Panel</button>
-          <button type="button" data-tab-button="clientes">Clientes</button>
-          <button type="button" data-tab-button="documentos">Documentos</button>
-          <button type="button" data-tab-button="avisos">Avisos</button>
-          <button type="button" data-tab-button="config">Demo y seguridad</button>
-        </nav>
-
-        <div class="sidebar-foot">
-          <a href="index.html">Web premium</a>
-          <button type="button" data-logout>Salir</button>
-        </div>
-      </aside>
-
-      <div class="hub-main">
-        <header class="hub-header">
-          <div>
-            <span class="eyebrow">Área privada</span>
-            <h1>Panel operativo Colomer</h1>
-          </div>
-          <div class="hub-actions">
-            <span class="trial-pill" data-trial-pill>Demo activa</span>
-            <button class="btn btn-small btn-ghost-dark" type="button" data-open-upload>Subir documento</button>
-          </div>
-        </header>
-
-        <section class="hub-tab active" data-tab="dashboard">
-          <div class="kpi-grid">
-            <article class="kpi-card"><span>Clientes activos</span><strong data-kpi-clients>18</strong><em>demo</em></article>
-            <article class="kpi-card"><span>Documentos recibidos</span><strong data-kpi-docs>42</strong><em>este mes</em></article>
-            <article class="kpi-card"><span>Pendientes</span><strong data-kpi-pending>12</strong><em>revisión</em></article>
-            <article class="kpi-card"><span>Ahorro estimado</span><strong>8h</strong><em>mensuales</em></article>
-          </div>
-
-          <div class="hub-grid">
-            <article class="hub-card wide">
-              <div class="card-title">
-                <div><span class="eyebrow">Bandeja</span><h2>Últimos documentos</h2></div>
-                <button class="link-button" type="button" data-tab-link="documentos">Ver todos</button>
-              </div>
-              <div class="table-wrap">
-                <table class="data-table">
-                  <thead>
-                    <tr><th>Cliente</th><th>Documento</th><th>Estado</th><th>Fecha</th></tr>
-                  </thead>
-                  <tbody data-doc-table="dashboard"></tbody>
-                </table>
-              </div>
-            </article>
-
-            <article class="hub-card">
-              <span class="eyebrow">Actividad</span>
-              <h2>Seguimiento interno</h2>
-              <div class="activity-list" data-activity-list></div>
-            </article>
-          </div>
-        </section>
-
-        <section class="hub-tab" data-tab="clientes">
-          <div class="card-title">
-            <div><span class="eyebrow">Clientes</span><h2>Fichas de cliente demo</h2></div>
-          </div>
-          <div class="client-grid" data-client-grid></div>
-        </section>
-
-        <section class="hub-tab" data-tab="documentos">
-          <article class="hub-card">
-            <div class="card-title">
-              <div><span class="eyebrow">Documentos</span><h2>Bandeja documental</h2></div>
-              <button class="btn btn-small btn-gold" type="button" data-open-upload>Nuevo documento</button>
-            </div>
-            <div class="filters">
-              <button class="active" type="button" data-filter="all">Todos</button>
-              <button type="button" data-filter="pendiente">Pendientes</button>
-              <button type="button" data-filter="validado">Validados</button>
-              <button type="button" data-filter="falta">Falta información</button>
-            </div>
-            <div class="table-wrap">
-              <table class="data-table">
-                <thead>
-                  <tr><th>Cliente</th><th>Tipo</th><th>Documento</th><th>Estado</th><th>Fecha</th><th>Responsable</th></tr>
-                </thead>
-                <tbody data-doc-table="full"></tbody>
-              </table>
-            </div>
-          </article>
-        </section>
-
-        <section class="hub-tab" data-tab="avisos">
-          <div class="hub-grid">
-            <article class="hub-card">
-              <span class="eyebrow">Avisos</span>
-              <h2>Mensajes al cliente</h2>
-              <div class="notice-list">
-                <div class="notice"><strong>Recordatorio trimestral</strong><span>Subir facturas antes del día 12.</span></div>
-                <div class="notice"><strong>Documentación incompleta</strong><span>Falta certificado bancario para Proyectos Levante.</span></div>
-                <div class="notice"><strong>Validación contable</strong><span>García Solar SL tiene documentos validados.</span></div>
-              </div>
-            </article>
-
-            <article class="hub-card">
-              <span class="eyebrow">Mensaje rápido</span>
-              <h2>Enviar aviso simulado</h2>
-              <form data-notice-form>
-                <label>Cliente
-                  <select name="client">
-                    <option>García Solar SL</option>
-                    <option>López Retail</option>
-                    <option>Natura Clinic</option>
-                    <option>Proyectos Levante</option>
-                  </select>
-                </label>
-                <label>Mensaje
-                  <textarea name="message" rows="4" required placeholder="Ejemplo: Hemos recibido tus facturas y están en revisión."></textarea>
-                </label>
-                <button class="btn btn-gold" type="submit">Guardar aviso demo</button>
-              </form>
-            </article>
-          </div>
-        </section>
-
-        <section class="hub-tab" data-tab="config">
-          <article class="hub-card">
-            <span class="eyebrow">Demo y seguridad</span>
-            <h2>Qué es real en esta demo y qué requiere versión profesional</h2>
-            <div class="security-grid">
-              <div>
-                <h3>Incluido en esta demo</h3>
-                <ul class="feature-list">
-                  <li>Diseño premium responsive.</li>
-                  <li>Navegación de Hub y paneles simulados.</li>
-                  <li>Login demo con localStorage.</li>
-                  <li>Periodo de 15 días por navegador.</li>
-                  <li>Datos ficticios para presentación comercial.</li>
-                </ul>
-              </div>
-              <div>
-                <h3>Necesario en versión real</h3>
-                <ul class="feature-list">
-                  <li>Login seguro con usuarios y roles.</li>
-                  <li>Base de datos y almacenamiento documental.</li>
-                  <li>Cifrado, backups y registros de actividad.</li>
-                  <li>Revisión RGPD, privacidad y contratos.</li>
-                  <li>Hosting, dominio, APIs y costes externos a nombre del cliente.</li>
-                </ul>
-              </div>
-            </div>
-            <div class="warning-box">
-              Esta demo no debe usarse para documentación real. El bloqueo de 15 días es comercial y funciona en el navegador del usuario; no sustituye una licencia ni un control real de acceso.
-            </div>
-            <button class="link-button danger" type="button" data-reset-demo>Reiniciar demo en este navegador</button>
-          </article>
-        </section>
-      </div>
-    </section>
-  </main>
-
-  <dialog class="upload-modal" data-upload-modal>
-    <form method="dialog" class="modal-card" data-upload-form>
-      <button class="modal-close" value="cancel" aria-label="Cerrar">×</button>
-      <span class="eyebrow">Subida documental</span>
-      <h2>Nuevo documento demo</h2>
-      <p class="form-note">El archivo no se sube a ningún servidor. Solo se guarda el nombre en este navegador.</p>
-      <label>Cliente
-        <select name="client" required>
-          <option>García Solar SL</option>
-          <option>López Retail</option>
-          <option>Natura Clinic</option>
-          <option>Proyectos Levante</option>
-          <option>Autónomo Marta Ruiz</option>
-        </select>
-      </label>
-      <label>Tipo de documento
-        <select name="type" required>
-          <option>Factura</option>
-          <option>Nómina</option>
-          <option>Contrato</option>
-          <option>Modelo fiscal</option>
-          <option>Justificante bancario</option>
-        </select>
-      </label>
-      <label>Archivo demo
-        <input type="file" name="file" aria-describedby="file-help">
-        <span id="file-help" class="form-note">No se sube ni se comparte. Solo se muestra el nombre en la bandeja.</span>
-      </label>
-      <label>Comentario
-        <textarea name="comment" rows="3" placeholder="Añadir observaciones internas."></textarea>
-      </label>
-      <button class="btn btn-gold" value="default" type="submit">Añadir a bandeja demo</button>
-    </form>
-  </dialog>
-
-  <div class="expired-overlay" data-expired-overlay hidden>
-    <div class="expired-card">
-      <span class="eyebrow">Demo finalizada</span>
-      <h2>El periodo de demostración de 15 días ha terminado.</h2>
-      <p>
-        Para continuar, sería necesario activar una versión real con acceso seguro, base de datos,
-        almacenamiento documental y configuración profesional.
-      </p>
-      <a class="btn btn-gold" href="index.html#contacto">Solicitar versión real</a>
     </div>
   </div>
 
-  <div class="toast" data-toast role="status" aria-live="polite"></div>
+  <section id="hubLogin" class="hub-login">
+    <div class="login-bg-orb orb-one"></div>
+    <div class="login-card">
+      <a href="index.html" class="brand-mark">
+        <span class="brand-shield">C</span>
+        <span><strong>Colomer Hub</strong><small>Área privada demo</small></span>
+      </a>
 
+      <div class="login-title">
+        <span class="eyebrow">Demo premium · 15 días</span>
+        <h1>Acceso al área cliente y panel interno.</h1>
+        <p>Entra como cliente o como equipo de Colomer para visualizar el flujo completo: solicitudes, documentación, lectura IA simulada y validación.</p>
+      </div>
+
+      <form id="loginForm" class="premium-form dark-form">
+        <label>Email
+          <input name="email" type="email" value="demo@colomerhub.es" autocomplete="username">
+        </label>
+        <label>Clave
+          <input name="password" type="password" value="demo2026" autocomplete="current-password">
+        </label>
+        <button class="btn btn-primary wide" type="submit">Entrar con credenciales demo</button>
+      </form>
+
+      <div class="login-shortcuts">
+        <button class="btn btn-secondary" data-login-role="client">Entrar como cliente</button>
+        <button class="btn btn-ghost" data-login-role="team">Entrar como equipo</button>
+      </div>
+
+      <div class="demo-credentials">
+        <strong>Credenciales demo</strong>
+        <span>demo@colomerhub.es · demo2026</span>
+        <span><b data-days-left>15</b> días restantes</span>
+      </div>
+    </div>
+  </section>
+
+  <section id="hubApp" class="hub-app" hidden>
+    <aside class="app-sidebar">
+      <a href="index.html" class="brand-mark app-brand">
+        <span class="brand-shield">C</span>
+        <span><strong>Colomer Hub</strong><small data-role-label>Equipo demo</small></span>
+      </a>
+      <nav class="app-nav">
+        <button class="active" data-view="dashboard">Inicio</button>
+        <button data-view="crm">CRM leads</button>
+        <button data-view="clients">Clientes</button>
+        <button data-view="documents">Documentos</button>
+        <button data-view="ai">Lectura IA</button>
+        <button data-view="calendar">Vencimientos</button>
+        <button data-view="messages">Mensajes</button>
+        <button data-view="settings">Demo</button>
+      </nav>
+      <div class="sidebar-note">
+        <span class="demo-pill"><span class="dot"></span><b data-days-left>15</b> días demo</span>
+        <p>Datos ficticios. Sin subida real ni almacenamiento externo.</p>
+      </div>
+    </aside>
+
+    <main class="app-main">
+      <header class="app-topbar">
+        <div>
+          <span class="eyebrow">Colomer & Asociados</span>
+          <h1 id="viewTitle">Panel de control</h1>
+        </div>
+        <div class="topbar-actions">
+          <button class="btn btn-small btn-secondary" data-simulate-expiry>Simular caducidad</button>
+          <button class="btn btn-small btn-ghost" data-logout>Cerrar sesión</button>
+        </div>
+      </header>
+
+      <section class="app-view active" data-view-panel="dashboard">
+        <div class="app-grid-4">
+          <div class="stat-card"><span>Leads</span><b data-kpi="leads">0</b><small>Entradas desde web</small></div>
+          <div class="stat-card"><span>Documentos</span><b data-kpi="docs">0</b><small>Subidos en demo</small></div>
+          <div class="stat-card"><span>Pendientes</span><b data-kpi="pending">0</b><small>Por validar</small></div>
+          <div class="stat-card"><span>Ahorro estimado</span><b data-kpi="hours">0h</b><small>Simulación operativa</small></div>
+        </div>
+
+        <div class="app-grid-2">
+          <article class="app-card">
+            <div class="card-head">
+              <div><span class="eyebrow">Actividad reciente</span><h3>Últimos movimientos</h3></div>
+              <button class="btn btn-small btn-primary" data-seed-demo>Generar demo</button>
+            </div>
+            <div id="activityFeed" class="activity-feed"></div>
+          </article>
+
+          <article class="app-card dark-panel">
+            <span class="eyebrow">Resumen ejecutivo</span>
+            <h3>Qué demuestra este Hub</h3>
+            <p>El cliente puede subir documentos, el equipo ve lo pendiente, la IA simula una prelectura y el asesor valida antes de cerrar el proceso.</p>
+            <div class="value-stack">
+              <div><b>Captación trazable</b><span>El lead entra desde la web y no se pierde.</span></div>
+              <div><b>Orden documental</b><span>Menos correos y WhatsApps dispersos.</span></div>
+              <div><b>IA con control humano</b><span>La tecnología prepara, el equipo decide.</span></div>
+            </div>
+          </article>
+        </div>
+      </section>
+
+      <section class="app-view" data-view-panel="crm">
+        <div class="card-head">
+          <div><span class="eyebrow">Captación</span><h2>CRM de leads</h2><p>Leads creados desde la web demo o añadidos manualmente.</p></div>
+          <button class="btn btn-primary" data-add-lead>Crear lead ejemplo</button>
+        </div>
+        <div class="table-wrap">
+          <table class="premium-table">
+            <thead><tr><th>Lead</th><th>Empresa</th><th>Servicio</th><th>Urgencia</th><th>Estado</th><th>Canal</th><th>Acción</th></tr></thead>
+            <tbody id="leadTable"></tbody>
+          </table>
+        </div>
+      </section>
+
+      <section class="app-view" data-view-panel="clients">
+        <div class="card-head">
+          <div><span class="eyebrow">Área cliente</span><h2>Clientes demo</h2><p>Vista interna con estado documental, responsable y próxima acción.</p></div>
+          <button class="btn btn-secondary" data-add-client-note>Añadir nota demo</button>
+        </div>
+        <div class="client-layout">
+          <aside class="client-list" id="clientList"></aside>
+          <article class="app-card" id="clientDetail"></article>
+        </div>
+      </section>
+
+      <section class="app-view" data-view-panel="documents">
+        <div class="app-grid-2">
+          <article class="app-card">
+            <span class="eyebrow">Subida documental</span>
+            <h2>Subir documento demo</h2>
+            <form id="documentForm" class="premium-form">
+              <label>Cliente
+                <select name="client">
+                  <option>Grupo Liria S.L.</option>
+                  <option>Estudio Norte Autónomos</option>
+                  <option>Clínica Prado S.L.</option>
+                </select>
+              </label>
+              <label>Tipo
+                <select name="type">
+                  <option>Factura recibida</option>
+                  <option>Factura emitida</option>
+                  <option>Ticket de gasto</option>
+                  <option>Nómina</option>
+                  <option>Contrato</option>
+                  <option>Justificante bancario</option>
+                </select>
+              </label>
+              <label>Archivo
+                <input name="file" type="file">
+              </label>
+              <button class="btn btn-primary wide" type="submit">Subir y registrar en bandeja</button>
+              <p class="small">La demo no sube archivos reales. Solo crea un registro ficticio en el navegador.</p>
+            </form>
+          </article>
+
+          <article class="app-card">
+            <span class="eyebrow">Bandeja</span>
+            <h2>Documentos recibidos</h2>
+            <div id="documentQueue" class="document-queue"></div>
+          </article>
+        </div>
+      </section>
+
+      <section class="app-view" data-view-panel="ai">
+        <div class="app-grid-2">
+          <article class="app-card">
+            <span class="eyebrow">Lectura IA simulada</span>
+            <h2>Factura analizada</h2>
+            <div id="aiPanel" class="ai-panel"></div>
+            <div class="button-row">
+              <button class="btn btn-primary" data-run-ai>Simular lectura</button>
+              <button class="btn btn-secondary" data-approve-ai>Aprobar validación</button>
+              <button class="btn btn-ghost" data-flag-ai>Marcar revisión</button>
+            </div>
+          </article>
+
+          <article class="app-card">
+            <span class="eyebrow">Control profesional</span>
+            <h2>Validación del asesor</h2>
+            <p>La IA propone datos. El asesor valida, corrige o rechaza antes de contabilizar. Este enfoque evita vender automatización total sin control.</p>
+            <div class="validation-checks">
+              <label><input type="checkbox" checked> Proveedor identificado</label>
+              <label><input type="checkbox" checked> Fecha y número de factura detectados</label>
+              <label><input type="checkbox"> IVA pendiente de revisión</label>
+              <label><input type="checkbox"> Categoría contable confirmada</label>
+            </div>
+          </article>
+        </div>
+      </section>
+
+      <section class="app-view" data-view-panel="calendar">
+        <div class="card-head">
+          <div><span class="eyebrow">Vencimientos</span><h2>Calendario operativo</h2><p>Vista simulada de próximas obligaciones y avisos.</p></div>
+          <button class="btn btn-primary" data-add-deadline>Añadir vencimiento demo</button>
+        </div>
+        <div id="deadlineGrid" class="deadline-grid"></div>
+      </section>
+
+      <section class="app-view" data-view-panel="messages">
+        <div class="app-grid-2">
+          <article class="app-card">
+            <span class="eyebrow">Comunicación</span>
+            <h2>Mensajes del cliente</h2>
+            <div id="messageList" class="message-list"></div>
+          </article>
+          <article class="app-card">
+            <span class="eyebrow">Nuevo aviso</span>
+            <h2>Enviar mensaje demo</h2>
+            <form id="messageForm" class="premium-form">
+              <label>Para
+                <select name="client">
+                  <option>Grupo Liria S.L.</option>
+                  <option>Estudio Norte Autónomos</option>
+                  <option>Clínica Prado S.L.</option>
+                </select>
+              </label>
+              <label>Mensaje
+                <textarea name="message" rows="4" placeholder="Ejemplo: Falta justificante de pago de la factura..."></textarea>
+              </label>
+              <button class="btn btn-primary wide" type="submit">Guardar mensaje demo</button>
+            </form>
+          </article>
+        </div>
+      </section>
+
+      <section class="app-view" data-view-panel="settings">
+        <div class="app-grid-2">
+          <article class="app-card">
+            <span class="eyebrow">Control de demo</span>
+            <h2>Periodo de demostración</h2>
+            <p>Inicio local: <strong data-start-date>—</strong></p>
+            <p>Días restantes: <strong data-days-left>15</strong></p>
+            <div class="button-row">
+              <button class="btn btn-secondary" data-reset-demo>Reiniciar demo local</button>
+              <button class="btn btn-ghost" data-simulate-expiry>Simular caducidad</button>
+            </div>
+          </article>
+          <article class="app-card dark-panel">
+            <span class="eyebrow">Nota comercial</span>
+            <h2>Qué falta para producción</h2>
+            <p>Para una versión real hacen falta login seguro, base de datos, almacenamiento documental, roles, backups, trazabilidad, revisión RGPD y conexión con herramientas del cliente.</p>
+          </article>
+        </div>
+      </section>
+    </main>
+  </section>
+
+  <div class="toast" id="toast" role="status" aria-live="polite"></div>
   <script src="app.js"></script>
 </body>
 </html>
