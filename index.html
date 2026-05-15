@@ -3,312 +3,330 @@
 <head>
   <meta charset="utf-8">
   <meta name="viewport" content="width=device-width, initial-scale=1">
-  <title>Colomer & Asociados · Asesoría integral para empresas</title>
-  <meta name="description" content="Demo premium de web corporativa y área privada para Colomer & Asociados. Asesoría fiscal, laboral, contable y mercantil.">
+  <title>Colomer & Asociados · Asesoría fiscal, laboral y contable</title>
+  <meta name="description" content="Demo premium de una web corporativa con Hub privado para asesoría fiscal, laboral, contable y mercantil.">
+  <link rel="icon" href="favicon.svg" type="image/svg+xml">
   <link rel="stylesheet" href="styles.css">
 </head>
-<body data-page="web">
-  <div id="demoGate" class="demo-gate" hidden>
-    <div class="gate-card">
-      <span class="eyebrow">Demo finalizada</span>
-      <h1>La prueba web de 15 días ha terminado</h1>
-      <p>Para mantener activa la demo, conectar formularios reales o publicar la versión profesional, es necesario activar la siguiente fase del proyecto.</p>
-      <div class="gate-actions">
-        <button class="btn btn-primary" data-reset-demo>Reiniciar demo local</button>
-        <a class="btn btn-ghost" href="hub.html">Ver Hub en modo demo</a>
-      </div>
-      <p class="small">En esta maqueta estática el control se guarda en el navegador. En producción se haría con usuario, licencia y base de datos.</p>
-    </div>
+<body class="public-site">
+  <div class="demo-ribbon" id="demoRibbon">
+    <span>Demo comercial · 15 días</span>
+    <strong id="demoDaysLeft">Calculando…</strong>
   </div>
 
-  <header class="site-header glass">
-    <a href="#inicio" class="brand-mark" aria-label="Colomer y Asociados">
-      <span class="brand-shield">C</span>
+  <header class="site-header" id="top">
+    <a class="brand" href="#top" aria-label="Inicio Colomer & Asociados">
+      <span class="brand-mark">C</span>
       <span>
         <strong>Colomer & Asociados</strong>
-        <small>Asesores de empresas</small>
+        <small>Fiscal · Laboral · Contable · Mercantil</small>
       </span>
     </a>
 
-    <nav class="main-nav" aria-label="Navegación principal">
+    <nav class="nav" aria-label="Navegación principal">
       <a href="#servicios">Servicios</a>
-      <a href="#empresas">Empresas</a>
-      <a href="#hub">Área cliente</a>
       <a href="#metodo">Método</a>
-      <a href="#diagnostico">Diagnóstico</a>
+      <a href="#hub">Colomer Hub</a>
+      <a href="#contacto">Contacto</a>
     </nav>
 
     <div class="header-actions">
-      <span class="demo-pill"><span class="dot"></span><b data-days-left>15</b> días de demo</span>
-      <a class="btn btn-small btn-ghost" href="hub.html">Acceso Hub</a>
+      <a class="btn btn-ghost" href="hub.html">Acceso clientes</a>
+      <a class="btn btn-primary" href="#diagnostico">Solicitar diagnóstico</a>
     </div>
-    <button class="menu-toggle" aria-label="Abrir menú" data-menu-toggle>☰</button>
+
+    <button class="mobile-menu" id="mobileMenuBtn" aria-label="Abrir menú">☰</button>
   </header>
 
-  <main id="inicio">
-    <section class="hero hero-live">
-      <div class="hero-bg-orb orb-one"></div>
-      <div class="hero-bg-orb orb-two"></div>
-      <div class="container hero-grid">
-        <div class="hero-content">
-          <span class="eyebrow">Fiscal · Laboral · Contable · Mercantil</span>
-          <h1>Una asesoría más clara, ágil y preparada para acompañar el crecimiento de tu empresa.</h1>
-          <p class="lead">Planificación fiscal, gestión laboral, contabilidad y asesoramiento empresarial con un espacio digital para ordenar documentación, avisos y seguimiento.</p>
-          <div class="hero-actions">
-            <a class="btn btn-primary" href="#diagnostico">Solicitar diagnóstico</a>
-            <a class="btn btn-secondary" href="hub.html">Probar área cliente</a>
+  <main>
+    <section class="hero section-pad">
+      <div class="hero-copy reveal">
+        <p class="eyebrow">Asesoría para empresas, autónomos y profesionales</p>
+        <h1>Una forma más clara, segura y ordenada de gestionar tu negocio.</h1>
+        <p class="hero-text">
+          Acompañamos a empresas y autónomos en sus obligaciones fiscales, laborales y contables,
+          con una atención cercana y una zona privada para centralizar documentación, estados y avisos.
+        </p>
+        <div class="hero-actions">
+          <a class="btn btn-primary btn-large" href="#diagnostico">Quiero una primera valoración</a>
+          <a class="btn btn-ghost btn-large" href="hub.html">Ver área cliente demo</a>
+        </div>
+
+        <div class="trust-row" aria-label="Señales de confianza">
+          <div>
+            <b>Documentación</b>
+            <span>Ordenada por estados</span>
           </div>
-          <div class="trust-row" aria-label="Puntos de confianza">
-            <span>Atención presencial y online</span>
-            <span>Equipo asignado</span>
-            <span>Portal documental</span>
+          <div>
+            <b>Seguimiento</b>
+            <span>Avisos y vencimientos</span>
+          </div>
+          <div>
+            <b>Atención</b>
+            <span>Equipo profesional</span>
+          </div>
+        </div>
+      </div>
+
+      <div class="hero-panel reveal delay-1" aria-label="Vista previa del Hub Colomer">
+        <div class="window-bar">
+          <span></span><span></span><span></span>
+          <small>Colomer Hub · Panel de cliente</small>
+        </div>
+        <div class="mock-dashboard">
+          <div class="mock-card accent">
+            <small>Estado general</small>
+            <b>Documentación Q2 recibida</b>
+            <em>3 documentos pendientes de revisión</em>
+          </div>
+          <div class="mock-grid">
+            <div class="mock-card">
+              <small>Próximo vencimiento</small>
+              <b>Modelo 303</b>
+              <em>En 8 días</em>
+            </div>
+            <div class="mock-card">
+              <small>Mensajes</small>
+              <b>2 novedades</b>
+              <em>Laboral y fiscal</em>
+            </div>
+          </div>
+          <div class="activity-list">
+            <div><span class="status-dot ok"></span>Factura de proveedor validada</div>
+            <div><span class="status-dot warn"></span>Contrato laboral pendiente</div>
+            <div><span class="status-dot info"></span>Nuevo aviso fiscal publicado</div>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <section class="logos-strip" aria-label="Ámbitos de trabajo">
+      <span>Empresas</span>
+      <span>Autónomos</span>
+      <span>Pymes</span>
+      <span>Sociedades</span>
+      <span>Profesionales</span>
+    </section>
+
+    <section class="section section-white" id="servicios">
+      <div class="section-head reveal">
+        <p class="eyebrow">Servicios</p>
+        <h2>Asesoramiento completo para que la gestión no frene el negocio.</h2>
+        <p>
+          Una estructura clara de servicios, orientada a resolver obligaciones, anticipar vencimientos
+          y mantener la información importante siempre accesible.
+        </p>
+      </div>
+
+      <div class="service-grid">
+        <article class="service-card reveal">
+          <span class="icon">01</span>
+          <h3>Fiscal</h3>
+          <p>Presentación de impuestos, planificación, modelos periódicos, requerimientos y seguimiento de obligaciones.</p>
+          <a href="#diagnostico">Consultar fiscalidad</a>
+        </article>
+        <article class="service-card reveal delay-1">
+          <span class="icon">02</span>
+          <h3>Laboral</h3>
+          <p>Nóminas, contratos, altas, bajas, seguros sociales, incidencias y apoyo en la gestión del equipo.</p>
+          <a href="#diagnostico">Consultar laboral</a>
+        </article>
+        <article class="service-card reveal delay-2">
+          <span class="icon">03</span>
+          <h3>Contable</h3>
+          <p>Contabilidad, cierres, balances, control documental y preparación de información para tomar decisiones.</p>
+          <a href="#diagnostico">Consultar contabilidad</a>
+        </article>
+        <article class="service-card reveal delay-3">
+          <span class="icon">04</span>
+          <h3>Mercantil</h3>
+          <p>Sociedades, libros, actas, trámites mercantiles y acompañamiento documental en procesos corporativos.</p>
+          <a href="#diagnostico">Consultar mercantil</a>
+        </article>
+      </div>
+    </section>
+
+    <section class="section split-section" id="metodo">
+      <div class="split-copy reveal">
+        <p class="eyebrow">Método de trabajo</p>
+        <h2>Menos documentos dispersos. Más control en cada paso.</h2>
+        <p>
+          El valor no está solo en presentar modelos o resolver trámites. Está en crear una relación ordenada:
+          qué falta, qué está recibido, qué está revisado y qué requiere acción.
+        </p>
+        <a class="btn btn-primary" href="#hub">Ver cómo funciona el Hub</a>
+      </div>
+
+      <div class="process-list reveal delay-1">
+        <div class="process-item">
+          <span>1</span>
+          <div>
+            <h3>Escuchamos y ordenamos</h3>
+            <p>Identificamos situación, obligaciones, volumen documental y prioridades.</p>
+          </div>
+        </div>
+        <div class="process-item">
+          <span>2</span>
+          <div>
+            <h3>Centralizamos documentación</h3>
+            <p>El cliente sube información y el equipo puede revisar, solicitar cambios y marcar estados.</p>
+          </div>
+        </div>
+        <div class="process-item">
+          <span>3</span>
+          <div>
+            <h3>Seguimos vencimientos</h3>
+            <p>Calendario, avisos y tareas para reducir urgencias y pérdidas de información.</p>
+          </div>
+        </div>
+        <div class="process-item">
+          <span>4</span>
+          <div>
+            <h3>Acompañamos decisiones</h3>
+            <p>Información más clara para anticipar escenarios y actuar con más seguridad.</p>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <section class="section hub-section" id="hub">
+      <div class="hub-copy reveal">
+        <p class="eyebrow gold">Colomer Hub</p>
+        <h2>Una zona privada para trabajar mejor con clientes.</h2>
+        <p>
+          El Hub es una demostración de cómo Colomer podría ofrecer a sus clientes un espacio privado
+          para subir documentos, consultar estados, revisar avisos y comunicarse con el despacho.
+        </p>
+
+        <div class="value-cards">
+          <div>
+            <b>Cliente</b>
+            <span>Sube documentos, consulta estados y ve vencimientos.</span>
+          </div>
+          <div>
+            <b>Equipo Colomer</b>
+            <span>Gestiona leads, documentación, tareas y revisión asistida.</span>
           </div>
         </div>
 
-        <aside class="hero-panel" aria-label="Panel demostrativo">
-          <div class="panel-top">
-            <span class="brand-shield mini">C</span>
-            <div>
-              <strong>Panel cliente</strong>
-              <small>Estado documental · Mayo</small>
-            </div>
-            <span class="status ok">Activo</span>
-          </div>
-          <div class="metric-grid">
-            <div class="metric"><b>24</b><span>facturas recibidas</span></div>
-            <div class="metric"><b>6</b><span>pendientes</span></div>
-            <div class="metric"><b>92%</b><span>lectura IA simulada</span></div>
+        <a class="btn btn-gold btn-large" href="hub.html">Entrar en la demo del Hub</a>
+      </div>
+
+      <div class="hub-screen reveal delay-1">
+        <div class="hub-sidebar">
+          <b>Colomer Hub</b>
+          <span class="active">Dashboard</span>
+          <span>Clientes</span>
+          <span>Documentos</span>
+          <span>IA asistida</span>
+          <span>Vencimientos</span>
+        </div>
+        <div class="hub-main-preview">
+          <div class="stat-grid">
+            <div><b>18</b><span>Documentos</span></div>
+            <div><b>5</b><span>Pendientes</span></div>
+            <div><b>12</b><span>Vencimientos</span></div>
           </div>
           <div class="timeline-card">
-            <div class="timeline-row complete"><span></span><p>Documentación T2 recibida</p></div>
-            <div class="timeline-row active"><span></span><p>Validación de facturas</p></div>
-            <div class="timeline-row"><span></span><p>Resumen para dirección</p></div>
-          </div>
-          <form class="quick-upload" data-fake-upload>
-            <label>Subir factura demo</label>
-            <div class="upload-line">
-              <input type="file" aria-label="Archivo de factura demo">
-              <button class="btn btn-small btn-primary" type="submit">Simular</button>
-            </div>
-            <p class="small">No se suben archivos reales. Es una simulación visual.</p>
-          </form>
-        </aside>
-      </div>
-    </section>
-
-    <section class="section" id="servicios">
-      <div class="container">
-        <div class="section-head">
-          <span class="eyebrow">Áreas de asesoramiento</span>
-          <h2>Servicios pensados para que el cliente entienda, confíe y actúe.</h2>
-          <p>La web no explica una propuesta técnica: muestra cómo se presentaría Colomer ante empresas, autónomos y pymes que buscan una asesoría profesional.</p>
-        </div>
-
-        <div class="cards-grid service-grid">
-          <article class="card service-card" data-service="Fiscal">
-            <div class="icon">▣</div>
-            <h3>Asesoría fiscal</h3>
-            <p>Planificación, impuestos, modelos trimestrales, declaraciones y optimización tributaria con seguimiento claro.</p>
-            <button class="link-button" data-open-service="Asesoría fiscal">Consultar servicio</button>
-          </article>
-          <article class="card service-card" data-service="Laboral">
-            <div class="icon">◷</div>
-            <h3>Asesoría laboral</h3>
-            <p>Contratos, nóminas, Seguridad Social, altas, bajas y soporte en gestión de personas.</p>
-            <button class="link-button" data-open-service="Asesoría laboral">Consultar servicio</button>
-          </article>
-          <article class="card service-card" data-service="Contabilidad">
-            <div class="icon">▥</div>
-            <h3>Contabilidad</h3>
-            <p>Contabilidad diaria, balances, cierres, cuentas anuales y reporting para tomar decisiones con datos.</p>
-            <button class="link-button" data-open-service="Contabilidad">Consultar servicio</button>
-          </article>
-          <article class="card service-card" data-service="Mercantil">
-            <div class="icon">⚖</div>
-            <h3>Mercantil</h3>
-            <p>Sociedades, acuerdos, modificaciones estatutarias y asesoramiento jurídico-mercantil.</p>
-            <button class="link-button" data-open-service="Mercantil">Consultar servicio</button>
-          </article>
-          <article class="card service-card" data-service="Autónomos">
-            <div class="icon">◇</div>
-            <h3>Autónomos y pymes</h3>
-            <p>Obligaciones, facturación, gastos deducibles, seguimiento mensual y acompañamiento cercano.</p>
-            <button class="link-button" data-open-service="Autónomos y pymes">Consultar servicio</button>
-          </article>
-          <article class="card service-card featured" data-service="Hub">
-            <div class="icon">✦</div>
-            <h3>Colomer Hub</h3>
-            <p>Área privada para subir documentación, consultar estados, recibir avisos y centralizar comunicaciones.</p>
-            <a class="link-button" href="hub.html">Abrir demo del Hub</a>
-          </article>
-        </div>
-      </div>
-    </section>
-
-    <section class="section split-section" id="empresas">
-      <div class="container split-grid">
-        <div>
-          <span class="eyebrow">Empresas</span>
-          <h2>Control fiscal, laboral y financiero para dirigir con seguridad.</h2>
-          <p class="lead">Una asesoría moderna no solo presenta impuestos. Anticipa vencimientos, organiza documentación y convierte la información contable en decisiones más claras.</p>
-          <div class="step-list">
-            <div><b>01</b><strong>Planificación fiscal y cierres</strong><span>Prevención de riesgos y toma de decisiones antes de final de ejercicio.</span></div>
-            <div><b>02</b><strong>Laboral y nóminas</strong><span>Empleados, contratos, seguros sociales y obligaciones periódicas.</span></div>
-            <div><b>03</b><strong>Reporting de dirección</strong><span>Información contable útil para entender evolución y necesidades.</span></div>
-          </div>
-        </div>
-        <div class="quote-panel">
-          <span class="big-number">+ claridad</span>
-          <p>Menos gestión reactiva. Más anticipación.</p>
-          <blockquote>“El cliente tiene que saber qué falta, qué vence y qué se ha gestionado.”</blockquote>
-        </div>
-      </div>
-    </section>
-
-    <section class="section alt" id="hub">
-      <div class="container hub-showcase">
-        <div class="section-head left">
-          <span class="eyebrow">Colomer Hub</span>
-          <h2>Una zona privada para trabajar mejor con clientes.</h2>
-          <p>El Hub convierte la relación documental en una experiencia ordenada: cada cliente sabe qué debe enviar, qué está pendiente y qué se ha revisado.</p>
-        </div>
-
-        <div class="hub-layout">
-          <div class="hub-screen">
-            <div class="mock-browser">
-              <div class="browser-dots"><span></span><span></span><span></span></div>
-              <strong>Área cliente · DEMO</strong>
-            </div>
-            <div class="mock-app-grid">
-              <aside>
-                <span class="brand-shield mini">C</span>
-                <button class="active">Resumen</button>
-                <button>Documentos</button>
-                <button>Vencimientos</button>
-                <button>Mensajes</button>
-              </aside>
-              <main>
-                <div class="mock-kpis">
-                  <div><b>3</b><span>pendientes</span></div>
-                  <div><b>12</b><span>validados</span></div>
-                  <div><b>28/06</b><span>próximo vencimiento</span></div>
-                </div>
-                <div class="document-row"><span class="doc-icon">PDF</span><div><b>Factura proveedor</b><small>Lectura simulada · pendiente validar</small></div><span class="badge warn">Revisar</span></div>
-                <div class="document-row"><span class="doc-icon">XLS</span><div><b>Resumen gastos</b><small>Validado por asesor</small></div><span class="badge ok">OK</span></div>
-                <div class="document-row"><span class="doc-icon">IMG</span><div><b>Ticket combustible</b><small>Campo IVA detectado</small></div><span class="badge">IA</span></div>
-              </main>
-            </div>
-          </div>
-
-          <div class="feature-list">
-            <div><span>▥</span><h3>Subida ordenada</h3><p>Facturas, nóminas, contratos, tickets y justificantes clasificados por cliente y periodo.</p></div>
-            <div><span>◌</span><h3>Seguimiento claro</h3><p>Estados visibles: recibido, pendiente de revisión, validado, rechazado o pendiente de corrección.</p></div>
-            <div><span>✦</span><h3>Lectura IA simulada</h3><p>Extracción de campos para mostrar el flujo: fecha, proveedor, base, IVA, total y categoría.</p></div>
-            <div><span>✉</span><h3>Comunicación centralizada</h3><p>Avisos y mensajes asociados a cada cliente para reducir correos sueltos.</p></div>
-            <a class="btn btn-primary wide" href="hub.html">Entrar en la demo del Hub</a>
+            <h3>Actividad reciente</h3>
+            <p><span class="status-dot ok"></span>IVA trimestral revisado</p>
+            <p><span class="status-dot warn"></span>Falta justificante bancario</p>
+            <p><span class="status-dot info"></span>Nuevo lead desde la web</p>
           </div>
         </div>
       </div>
     </section>
 
-    <section class="section" id="metodo">
-      <div class="container">
-        <div class="section-head">
-          <span class="eyebrow">Método de trabajo</span>
-          <h2>Un proceso claro para pasar de la consulta a la gestión.</h2>
-        </div>
-        <div class="process-line">
-          <div><b>1</b><strong>Escuchamos</strong><span>Entendemos situación, estructura y objetivos.</span></div>
-          <div><b>2</b><strong>Analizamos</strong><span>Detectamos obligaciones, riesgos y oportunidades.</span></div>
-          <div><b>3</b><strong>Proponemos</strong><span>Diseñamos una solución clara y adaptada.</span></div>
-          <div><b>4</b><strong>Gestionamos</strong><span>Ejecutamos con rigor y seguimiento.</span></div>
-          <div><b>5</b><strong>Acompañamos</strong><span>Revisamos, informamos y mejoramos.</span></div>
-        </div>
+    <section class="section scenario-section" id="diagnostico">
+      <div class="section-head reveal">
+        <p class="eyebrow">Recorrido demostrativo</p>
+        <h2>Prueba el flujo completo: de la web al Hub.</h2>
+        <p>
+          Envía este formulario ficticio y el lead aparecerá dentro del Hub demo, en la zona de equipo.
+          No se envía nada a servidores: todo queda guardado solo en este navegador.
+        </p>
       </div>
-    </section>
 
-    <section class="section diagnostic-section" id="diagnostico">
-      <div class="container diagnostic-grid">
-        <div>
-          <span class="eyebrow">Diagnóstico inicial</span>
-          <h2>¿Hablamos sobre tu negocio?</h2>
-          <p class="lead">Simula una solicitud real. En esta demo, el formulario guarda el lead en el navegador y lo muestra dentro del CRM del Hub.</p>
-          <div class="mini-card">
-            <strong>Demo conectada al Hub</strong>
-            <p>Cuando envíes el formulario, abre el Hub y entra como equipo para ver el lead en la bandeja comercial.</p>
-          </div>
-        </div>
-
-        <form class="premium-form" id="diagnosticForm">
-          <div class="form-row">
-            <label>Nombre<input name="name" required placeholder="Nombre y apellidos"></label>
-            <label>Empresa<input name="company" required placeholder="Empresa"></label>
-          </div>
-          <div class="form-row">
-            <label>Email<input name="email" type="email" required placeholder="correo@empresa.es"></label>
-            <label>Teléfono<input name="phone" placeholder="+34 600 000 000"></label>
-          </div>
-          <label>Servicio de interés
-            <select name="service">
-              <option>Asesoría fiscal</option>
-              <option>Asesoría laboral</option>
-              <option>Contabilidad</option>
+      <div class="scenario-grid">
+        <form class="premium-form reveal" id="leadForm">
+          <h3>Solicitar diagnóstico inicial</h3>
+          <label>
+            Nombre y empresa
+            <input type="text" name="name" placeholder="Ej. Empresa Demo S.L." required>
+          </label>
+          <label>
+            Email
+            <input type="email" name="email" placeholder="contacto@empresa-demo.es" required>
+          </label>
+          <label>
+            Tipo de consulta
+            <select name="service" required>
+              <option value="">Seleccionar</option>
+              <option>Fiscal</option>
+              <option>Laboral</option>
+              <option>Contable</option>
               <option>Mercantil</option>
-              <option>Autónomos y pymes</option>
-              <option>Colomer Hub / Área Cliente</option>
+              <option>Alta como nuevo cliente</option>
             </select>
           </label>
-          <label>Mensaje
-            <textarea name="message" rows="4" placeholder="Cuéntanos brevemente tu situación"></textarea>
+          <label>
+            ¿Qué necesitas ordenar?
+            <textarea name="message" rows="4" placeholder="Cuéntanos brevemente la situación"></textarea>
           </label>
-          <button class="btn btn-primary wide" type="submit">Enviar solicitud demo</button>
-          <p class="small">Demo sin envío real. En producción se conectaría a email, CRM o automatización.</p>
+          <button class="btn btn-primary btn-full" type="submit">Enviar solicitud demo</button>
+          <p class="form-note">Demo: los datos se guardan localmente para mostrarlos en el Hub.</p>
         </form>
+
+        <div class="journey-card reveal delay-1">
+          <h3>Qué verá Colomer dentro del Hub</h3>
+          <ol class="journey">
+            <li><span>01</span><b>Nuevo lead recibido</b><em>Origen: formulario web</em></li>
+            <li><span>02</span><b>Clasificación automática</b><em>Fiscal, laboral, contable o mercantil</em></li>
+            <li><span>03</span><b>Tarea interna</b><em>Revisar y contactar con el cliente</em></li>
+            <li><span>04</span><b>Seguimiento</b><em>Convertir en cliente o cerrar consulta</em></li>
+          </ol>
+          <a class="btn btn-ghost btn-full" href="hub.html#leads">Abrir Hub y revisar leads</a>
+        </div>
+      </div>
+    </section>
+
+    <section class="section section-white compact-cta" id="contacto">
+      <div class="cta-panel reveal">
+        <div>
+          <p class="eyebrow">Contacto</p>
+          <h2>Una asesoría más accesible, ordenada y preparada para crecer.</h2>
+          <p>
+            Esta pantalla representa cómo podría presentarse Colomer con una web profesional
+            conectada a una zona privada para clientes.
+          </p>
+        </div>
+        <div class="cta-actions">
+          <a class="btn btn-primary btn-large" href="#diagnostico">Solicitar valoración</a>
+          <a class="btn btn-ghost btn-large" href="hub.html">Acceso clientes demo</a>
+        </div>
       </div>
     </section>
   </main>
 
-  <footer class="site-footer">
-    <div class="container footer-grid">
-      <div>
-        <a href="#inicio" class="brand-mark footer-brand"><span class="brand-shield">C</span><span><strong>Colomer & Asociados</strong><small>Asesores de empresas</small></span></a>
-        <p>Demo conceptual de web corporativa premium y área privada para clientes. Sustituir textos, imágenes y datos por material definitivo en producción.</p>
-      </div>
-      <div>
-        <h4>Servicios</h4>
-        <a href="#servicios">Fiscal</a>
-        <a href="#servicios">Laboral</a>
-        <a href="#servicios">Contabilidad</a>
-        <a href="#servicios">Mercantil</a>
-      </div>
-      <div>
-        <h4>Área cliente</h4>
-        <a href="hub.html">Acceso Hub demo</a>
-        <a href="#diagnostico">Solicitar diagnóstico</a>
-        <a href="#hub">Funcionamiento</a>
-      </div>
-      <div>
-        <h4>Contacto demo</h4>
-        <p>Madrid · Atención presencial y online</p>
-        <p>info@colomerasociados.es</p>
-      </div>
+  <footer class="footer">
+    <div>
+      <a class="brand brand-footer" href="#top">
+        <span class="brand-mark">C</span>
+        <span>
+          <strong>Colomer & Asociados</strong>
+          <small>Demo web + Hub premium</small>
+        </span>
+      </a>
+      <p>Demo visual y funcional con datos ficticios. No sustituye una versión real con seguridad, base de datos y revisión legal.</p>
     </div>
-    <div class="container footer-bottom">
-      <span>© 2026 Colomer & Asociados · Demo conceptual.</span>
-      <button class="plain" data-reset-demo>Reiniciar periodo demo</button>
+    <div class="footer-links">
+      <a href="#servicios">Servicios</a>
+      <a href="#hub">Colomer Hub</a>
+      <a href="hub.html">Área cliente</a>
     </div>
   </footer>
 
   <div class="toast" id="toast" role="status" aria-live="polite"></div>
-
-  <dialog id="serviceDialog" class="premium-dialog">
-    <button class="dialog-close" data-close-dialog aria-label="Cerrar">×</button>
-    <span class="eyebrow">Consulta de servicio</span>
-    <h3 id="serviceDialogTitle">Servicio</h3>
-    <p>Esta sería la ficha comercial del servicio, con beneficios, documentación necesaria y llamada a solicitar diagnóstico. En la demo se muestra como interacción visual.</p>
-    <a class="btn btn-primary" href="#diagnostico" data-close-dialog>Solicitar diagnóstico</a>
-  </dialog>
-
   <script src="app.js"></script>
 </body>
 </html>

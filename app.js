@@ -1,519 +1,903 @@
-(() => {
-  const KEY_PREFIX = "colomerPremiumDemoV2";
-  const START_KEY = `${KEY_PREFIX}:start`;
-  const EXPIRED_KEY = `${KEY_PREFIX}:expired`;
-  const ROLE_KEY = `${KEY_PREFIX}:role`;
-  const LEADS_KEY = `${KEY_PREFIX}:leads`;
-  const DOCS_KEY = `${KEY_PREFIX}:docs`;
-  const MESSAGES_KEY = `${KEY_PREFIX}:messages`;
-  const DEADLINES_KEY = `${KEY_PREFIX}:deadlines`;
-  const ACTIVITY_KEY = `${KEY_PREFIX}:activity`;
-  const CLIENT_KEY = `${KEY_PREFIX}:client`;
-  const DAY = 24 * 60 * 60 * 1000;
+/* Colomer Web + Hub Premium Demo · V3 corregida
+   Demo estática para GitHub Pages: usa localStorage, datos ficticios y sin backend.
+   Corrección: las claves de localStorage llevan namespace propio para evitar que
+   una demo anterior deje la prueba caducada al publicar una nueva versión.
+*/
+
+(function () {
+  "use strict";
+
   const DEMO_DAYS = 15;
-
-  const $ = (sel, ctx = document) => ctx.querySelector(sel);
-  const $$ = (sel, ctx = document) => Array.from(ctx.querySelectorAll(sel));
-  const page = document.body.dataset.page;
-
-  const seedClients = [
-    { name: "Grupo Liria S.L.", type: "Empresa", manager: "Laura Colomer", status: "Pendiente de IVA T2", docs: 12, pending: 3, next: "28/06 · Modelo 303" },
-    { name: "Estudio Norte Autónomos", type: "Autónomos", manager: "Equipo Fiscal", status: "Documentación incompleta", docs: 8, pending: 2, next: "30/06 · Gastos deducibles" },
-    { name: "Clínica Prado S.L.", type: "Empresa con empleados", manager: "Equipo Laboral", status: "Nóminas validadas", docs: 16, pending: 1, next: "25/06 · Seguros sociales" }
+  const STORAGE_PREFIX = "colomerPremiumDemoV3Fixed_20260516_";
+  const LEGACY_KEYS = [
+    "colomerDemoStart",
+    "colomerLeads",
+    "colomerDocs",
+    "colomerClients",
+    "colomerTasks",
+    "colomerMessages",
+    "colomerSessionRole",
+    "colomerDemoExpired",
+    "colomerTrialStart",
+    "colomerTrialEnded"
   ];
 
-  const sampleLeads = [
-    { name: "Marta Rivas", company: "Rivas Retail S.L.", service: "Asesoría fiscal", urgency: "Alta", status: "Nuevo", channel: "Web" },
-    { name: "Javier Montes", company: "Montes Arquitectura", service: "Autónomos y pymes", urgency: "Normal", status: "Contactar", channel: "Formulario" },
-    { name: "Elena Ruiz", company: "Clínica Dental Ruiz", service: "Asesoría laboral", urgency: "Alta", status: "Reunión", channel: "Web" }
-  ];
+  const KEYS = {
+    start: STORAGE_PREFIX + "start",
+    leads: STORAGE_PREFIX + "leads",
+    docs: STORAGE_PREFIX + "docs",
+    clients: STORAGE_PREFIX + "clients",
+    tasks: STORAGE_PREFIX + "tasks",
+    messages: STORAGE_PREFIX + "messages",
+    session: STORAGE_PREFIX + "sessionRole"
+  };
 
-  const sampleDocs = [
-    { client: "Grupo Liria S.L.", type: "Factura recibida", file: "factura-proveedor-438.pdf", status: "Pendiente de revisión", period: "T2 2026", created: todayLabel() },
-    { client: "Estudio Norte Autónomos", type: "Ticket de gasto", file: "ticket-combustible.jpg", status: "Validado", period: "Junio 2026", created: todayLabel() },
-    { client: "Clínica Prado S.L.", type: "Nómina", file: "nominas-mayo.pdf", status: "Recibido", period: "Mayo 2026", created: todayLabel() }
-  ];
-
-  const sampleMessages = [
-    { client: "Grupo Liria S.L.", from: "Asesoría", message: "Faltan dos facturas recibidas para cerrar el trimestre.", date: todayLabel() },
-    { client: "Clínica Prado S.L.", from: "Cliente", message: "Hemos subido el contrato actualizado para revisión laboral.", date: todayLabel() }
-  ];
-
-  const sampleDeadlines = [
-    { day: "20", month: "Jun", title: "Modelo 111", client: "Grupo Liria S.L.", status: "Preparando" },
-    { day: "28", month: "Jun", title: "Modelo 303", client: "Varios clientes", status: "Pendiente documentación" },
-    { day: "30", month: "Jun", title: "Cierre mensual", client: "Clínica Prado S.L.", status: "En revisión" }
-  ];
-
-  function now() { return Date.now(); }
-  function getJSON(key, fallback) {
-    try { return JSON.parse(localStorage.getItem(key)) ?? fallback; } catch { return fallback; }
-  }
-  function setJSON(key, value) { localStorage.setItem(key, JSON.stringify(value)); }
-  function todayLabel() {
-    const d = new Date();
-    return d.toLocaleDateString("es-ES", { day:"2-digit", month:"2-digit", year:"numeric" });
-  }
-  function timeLabel() {
-    return new Date().toLocaleTimeString("es-ES", { hour:"2-digit", minute:"2-digit" });
+  function clearLegacyDemoKeys() {
+    LEGACY_KEYS.forEach((key) => localStorage.removeItem(key));
   }
 
-  function ensureDemoStart() {
-    let start = Number(localStorage.getItem(START_KEY));
-    if (!start) {
-      start = now();
-      localStorage.setItem(START_KEY, String(start));
+  function hasResetFlag() {
+    const params = new URLSearchParams(window.location.search);
+    return params.has("resetdemo") || params.has("reset") || params.get("demo") === "reset";
+  }
+
+  const now = () => new Date();
+  const fmt = (dateLike) => {
+    const d = new Date(dateLike);
+    return d.toLocaleDateString("es-ES", { day: "2-digit", month: "short", year: "numeric" });
+  };
+  const fmtTime = (dateLike) => {
+    const d = new Date(dateLike);
+    return d.toLocaleString("es-ES", { day: "2-digit", month: "short", hour: "2-digit", minute: "2-digit" });
+  };
+
+  function read(key, fallback) {
+    try {
+      const raw = localStorage.getItem(key);
+      return raw ? JSON.parse(raw) : fallback;
+    } catch {
+      return fallback;
     }
-    return start;
   }
-  function daysLeft() {
-    const start = ensureDemoStart();
-    const elapsed = Math.floor((now() - start) / DAY);
-    return Math.max(0, DEMO_DAYS - elapsed);
+
+  function write(key, value) {
+    localStorage.setItem(key, JSON.stringify(value));
   }
+
+  function getDemoStart() {
+    let start = localStorage.getItem(KEYS.start);
+    let parsed = start ? new Date(start) : null;
+
+    if (!start || Number.isNaN(parsed.getTime())) {
+      start = new Date().toISOString();
+      localStorage.setItem(KEYS.start, start);
+      parsed = new Date(start);
+    }
+
+    return parsed;
+  }
+
+  function getDaysLeft() {
+    const start = getDemoStart();
+    const elapsed = Math.max(0, now().getTime() - start.getTime());
+    const elapsedDays = Math.floor(elapsed / (1000 * 60 * 60 * 24));
+    return Math.max(0, DEMO_DAYS - elapsedDays);
+  }
+
   function isExpired() {
-    return localStorage.getItem(EXPIRED_KEY) === "1" || daysLeft() <= 0;
-  }
-  function updateDemoUI() {
-    const left = daysLeft();
-    $$("[data-days-left]").forEach(el => el.textContent = String(left));
-    $$("[data-start-date]").forEach(el => {
-      const d = new Date(ensureDemoStart());
-      el.textContent = d.toLocaleDateString("es-ES", { day:"2-digit", month:"long", year:"numeric" });
-    });
-    const gate = $("#demoGate");
-    if (gate) gate.hidden = !isExpired();
+    return getDaysLeft() <= 0;
   }
 
-  function resetDemo() {
-    [START_KEY, EXPIRED_KEY, ROLE_KEY, LEADS_KEY, DOCS_KEY, MESSAGES_KEY, DEADLINES_KEY, ACTIVITY_KEY, CLIENT_KEY].forEach(k => localStorage.removeItem(k));
-    ensureDemoStart();
-    toast("Demo reiniciada. Vuelve a empezar el periodo local de 15 días.");
-    setTimeout(() => location.reload(), 650);
-  }
-  function simulateExpiry() {
-    localStorage.setItem(EXPIRED_KEY, "1");
-    updateDemoUI();
-    toast("Caducidad simulada. Puedes reiniciar la demo desde el aviso.");
-  }
-
-  function toast(message) {
-    const el = $("#toast");
-    if (!el) return;
-    el.textContent = message;
-    el.classList.add("show");
-    clearTimeout(window.__toastTimer);
-    window.__toastTimer = setTimeout(() => el.classList.remove("show"), 3400);
-  }
-
-  function addActivity(title, detail) {
-    const items = getJSON(ACTIVITY_KEY, []);
-    items.unshift({ title, detail, time: timeLabel() });
-    setJSON(ACTIVITY_KEY, items.slice(0, 12));
+  function resetDemoData(resetStart = true) {
+    if (resetStart) localStorage.setItem(KEYS.start, new Date().toISOString());
+    write(KEYS.leads, seedLeads());
+    write(KEYS.clients, seedClients());
+    write(KEYS.docs, seedDocs());
+    write(KEYS.tasks, seedTasks());
+    write(KEYS.messages, seedMessages());
   }
 
   function ensureSeedData() {
-    if (!localStorage.getItem(DOCS_KEY)) setJSON(DOCS_KEY, sampleDocs);
-    if (!localStorage.getItem(MESSAGES_KEY)) setJSON(MESSAGES_KEY, sampleMessages);
-    if (!localStorage.getItem(DEADLINES_KEY)) setJSON(DEADLINES_KEY, sampleDeadlines);
-    if (!localStorage.getItem(ACTIVITY_KEY)) {
-      setJSON(ACTIVITY_KEY, [
-        { title: "Factura recibida", detail: "Grupo Liria S.L. subió una factura para validación.", time: "09:41" },
-        { title: "Lead nuevo", detail: "Solicitud desde web para asesoría fiscal.", time: "10:12" },
-        { title: "Documento validado", detail: "Nóminas de Clínica Prado S.L. revisadas por el equipo.", time: "11:03" }
-      ]);
-    }
+    if (!localStorage.getItem(KEYS.clients)) write(KEYS.clients, seedClients());
+    if (!localStorage.getItem(KEYS.docs)) write(KEYS.docs, seedDocs());
+    if (!localStorage.getItem(KEYS.tasks)) write(KEYS.tasks, seedTasks());
+    if (!localStorage.getItem(KEYS.messages)) write(KEYS.messages, seedMessages());
+    if (!localStorage.getItem(KEYS.leads)) write(KEYS.leads, seedLeads());
   }
 
-  function bindCommon() {
-    ensureDemoStart();
-    updateDemoUI();
-    $$("[data-reset-demo]").forEach(btn => btn.addEventListener("click", resetDemo));
-    $$("[data-simulate-expiry]").forEach(btn => btn.addEventListener("click", simulateExpiry));
-
-    const toggle = $("[data-menu-toggle]");
-    const header = $(".site-header");
-    if (toggle && header) toggle.addEventListener("click", () => header.classList.toggle("open"));
-
-    const fakeUpload = $("[data-fake-upload]");
-    if (fakeUpload) {
-      fakeUpload.addEventListener("submit", (e) => {
-        e.preventDefault();
-        toast("Factura demo simulada. Abre el Hub para ver el flujo documental.");
-        addActivity("Factura demo simulada", "Se ha generado una subida visual desde la web.");
-      });
-    }
-  }
-
-  function initWeb() {
-    const form = $("#diagnosticForm");
-    if (form) {
-      form.addEventListener("submit", (e) => {
-        e.preventDefault();
-        const data = Object.fromEntries(new FormData(form).entries());
-        const leads = getJSON(LEADS_KEY, []);
-        leads.unshift({
-          name: data.name || "Lead demo",
-          company: data.company || "Empresa demo",
-          service: data.service || "Asesoría fiscal",
-          urgency: "Normal",
-          status: "Nuevo",
-          channel: "Web",
-          email: data.email,
-          phone: data.phone,
-          message: data.message,
-          created: todayLabel()
-        });
-        setJSON(LEADS_KEY, leads);
-        addActivity("Nuevo lead desde web", `${data.company || "Empresa demo"} solicita ${data.service || "servicio"}.`);
-        form.reset();
-        toast("Solicitud registrada en modo demo. Ya aparece en el CRM del Hub.");
-      });
-    }
-
-    $$("[data-open-service]").forEach(btn => {
-      btn.addEventListener("click", () => {
-        const dialog = $("#serviceDialog");
-        const title = $("#serviceDialogTitle");
-        if (title) title.textContent = btn.dataset.openService;
-        if (dialog?.showModal) dialog.showModal();
-      });
-    });
-    $$("[data-close-dialog]").forEach(btn => btn.addEventListener("click", () => $("#serviceDialog")?.close()));
-  }
-
-  function login(role = "team") {
-    localStorage.setItem(ROLE_KEY, role);
-    showHubApp();
-  }
-
-  function showHubApp() {
-    ensureSeedData();
-    const role = localStorage.getItem(ROLE_KEY) || "team";
-    $("#hubLogin")?.setAttribute("hidden", "");
-    $("#hubApp")?.removeAttribute("hidden");
-    $$("[data-role-label]").forEach(el => el.textContent = role === "client" ? "Cliente demo" : "Equipo demo");
-    renderHub();
-  }
-
-  function initHub() {
-    if (localStorage.getItem(ROLE_KEY)) showHubApp();
-
-    $("#loginForm")?.addEventListener("submit", (e) => {
-      e.preventDefault();
-      const data = Object.fromEntries(new FormData(e.currentTarget).entries());
-      if (data.email === "demo@colomerhub.es" && data.password === "demo2026") {
-        login("team");
-      } else {
-        toast("Usa las credenciales demo: demo@colomerhub.es · demo2026");
+  function seedClients() {
+    return [
+      {
+        id: "c1",
+        name: "Ibernova Solar S.L.",
+        type: "Sociedad",
+        manager: "Equipo Fiscal",
+        risk: "Medio",
+        docs: 8,
+        pending: 2,
+        next: "Modelo 303 · 18/07/2026",
+        status: "Activo"
+      },
+      {
+        id: "c2",
+        name: "Marta Vidal Studio",
+        type: "Autónoma",
+        manager: "Equipo Contable",
+        risk: "Bajo",
+        docs: 5,
+        pending: 1,
+        next: "IRPF trimestral · 20/07/2026",
+        status: "Activo"
+      },
+      {
+        id: "c3",
+        name: "Restauración Norte S.L.",
+        type: "Pyme",
+        manager: "Equipo Laboral",
+        risk: "Medio",
+        docs: 12,
+        pending: 4,
+        next: "Seguros sociales · 30/06/2026",
+        status: "Revisión"
       }
-    });
-
-    $$("[data-login-role]").forEach(btn => btn.addEventListener("click", () => login(btn.dataset.loginRole)));
-    $("[data-logout]")?.addEventListener("click", () => {
-      localStorage.removeItem(ROLE_KEY);
-      location.reload();
-    });
-
-    $$(".app-nav button").forEach(btn => {
-      btn.addEventListener("click", () => setView(btn.dataset.view));
-    });
-
-    $("[data-seed-demo]")?.addEventListener("click", () => {
-      setJSON(LEADS_KEY, sampleLeads);
-      setJSON(DOCS_KEY, sampleDocs);
-      setJSON(MESSAGES_KEY, sampleMessages);
-      setJSON(DEADLINES_KEY, sampleDeadlines);
-      addActivity("Datos demo generados", "Se han cargado leads, documentos, mensajes y vencimientos ficticios.");
-      renderHub();
-      toast("Datos demo generados.");
-    });
-
-    $("[data-add-lead]")?.addEventListener("click", () => {
-      const leads = getJSON(LEADS_KEY, []);
-      const examples = sampleLeads;
-      const lead = { ...examples[Math.floor(Math.random() * examples.length)], created: todayLabel(), status: "Nuevo" };
-      leads.unshift(lead);
-      setJSON(LEADS_KEY, leads);
-      addActivity("Lead creado", `${lead.company} solicita ${lead.service}.`);
-      renderHub();
-      toast("Lead ejemplo añadido.");
-    });
-
-    $("#documentForm")?.addEventListener("submit", (e) => {
-      e.preventDefault();
-      const data = Object.fromEntries(new FormData(e.currentTarget).entries());
-      const fileInput = e.currentTarget.querySelector('input[type="file"]');
-      const docs = getJSON(DOCS_KEY, []);
-      const fileName = fileInput?.files?.[0]?.name || "documento-demo.pdf";
-      docs.unshift({ client: data.client, type: data.type, file: fileName, status: "Pendiente de revisión", period: "Demo 2026", created: todayLabel() });
-      setJSON(DOCS_KEY, docs);
-      addActivity("Documento recibido", `${data.client} subió ${data.type}.`);
-      e.currentTarget.reset();
-      renderHub();
-      toast("Documento registrado en la bandeja demo.");
-    });
-
-    $("[data-run-ai]")?.addEventListener("click", () => {
-      setJSON(`${KEY_PREFIX}:ai`, generateAIReading());
-      addActivity("Lectura IA simulada", "Se ha extraído información de una factura demo.");
-      renderAIPanel();
-      renderKPIs();
-      toast("Lectura IA simulada generada.");
-    });
-
-    $("[data-approve-ai]")?.addEventListener("click", () => {
-      const ai = getJSON(`${KEY_PREFIX}:ai`, null);
-      if (!ai) return toast("Primero simula una lectura IA.");
-      ai.status = "Validada por asesor";
-      setJSON(`${KEY_PREFIX}:ai`, ai);
-      addActivity("Factura validada", "El asesor ha aprobado la propuesta de lectura IA.");
-      renderAIPanel();
-      renderKPIs();
-      toast("Validación aprobada en modo demo.");
-    });
-
-    $("[data-flag-ai]")?.addEventListener("click", () => {
-      const ai = getJSON(`${KEY_PREFIX}:ai`, generateAIReading());
-      ai.status = "Pendiente de revisión";
-      setJSON(`${KEY_PREFIX}:ai`, ai);
-      addActivity("Factura marcada para revisión", "Se ha detectado una posible inconsistencia en el IVA.");
-      renderAIPanel();
-      toast("Marcada para revisión.");
-    });
-
-    $("[data-add-deadline]")?.addEventListener("click", () => {
-      const deadlines = getJSON(DEADLINES_KEY, []);
-      deadlines.unshift({ day: "05", month: "Jul", title: "Revisión contable", client: "Grupo Liria S.L.", status: "Nuevo aviso" });
-      setJSON(DEADLINES_KEY, deadlines);
-      addActivity("Vencimiento añadido", "Nueva revisión contable programada.");
-      renderDeadlines();
-      toast("Vencimiento demo añadido.");
-    });
-
-    $("#messageForm")?.addEventListener("submit", (e) => {
-      e.preventDefault();
-      const data = Object.fromEntries(new FormData(e.currentTarget).entries());
-      const messages = getJSON(MESSAGES_KEY, []);
-      messages.unshift({ client: data.client, from: "Asesoría", message: data.message || "Mensaje de seguimiento demo.", date: todayLabel() });
-      setJSON(MESSAGES_KEY, messages);
-      addActivity("Mensaje guardado", `Aviso enviado a ${data.client}.`);
-      e.currentTarget.reset();
-      renderMessages();
-      toast("Mensaje demo guardado.");
-    });
-
-    $("[data-add-client-note]")?.addEventListener("click", () => {
-      addActivity("Nota interna añadida", "Se ha creado una nota de seguimiento en la ficha cliente.");
-      renderActivity();
-      toast("Nota interna demo añadida.");
-    });
+    ];
   }
 
-  function setView(view) {
-    $$(".app-nav button").forEach(btn => btn.classList.toggle("active", btn.dataset.view === view));
-    $$(".app-view").forEach(panel => panel.classList.toggle("active", panel.dataset.viewPanel === view));
+  function seedDocs() {
+    return [
+      { id: uid(), name: "factura-proveedor-junio.pdf", client: "Ibernova Solar S.L.", type: "Factura recibida", status: "pendiente", date: new Date().toISOString() },
+      { id: uid(), name: "nominas-equipo-mayo.zip", client: "Restauración Norte S.L.", type: "Nómina", status: "revisado", date: addDays(-2).toISOString() },
+      { id: uid(), name: "modelo-303-borrador.pdf", client: "Ibernova Solar S.L.", type: "Modelo fiscal", status: "validado", date: addDays(-3).toISOString() },
+      { id: uid(), name: "contrato-alta-trabajador.pdf", client: "Restauración Norte S.L.", type: "Contrato", status: "falta", date: addDays(-1).toISOString() },
+      { id: uid(), name: "facturas-emitidas-mayo.xlsx", client: "Marta Vidal Studio", type: "Factura emitida", status: "recibido", date: addDays(-4).toISOString() }
+    ];
+  }
+
+  function seedLeads() {
+    return [
+      { id: uid(), date: addDays(-1).toISOString(), name: "Empresa Demo Consultoría", email: "contacto@empresa-demo.es", service: "Fiscal", message: "Necesitamos revisar nuestros modelos trimestrales.", status: "nuevo" },
+      { id: uid(), date: addDays(-3).toISOString(), name: "Autónomo Demo", email: "hola@autonomo-demo.es", service: "Alta como nuevo cliente", message: "Quiero ordenar facturas y obligaciones.", status: "contactado" }
+    ];
+  }
+
+  function seedTasks() {
+    return [
+      { id: uid(), title: "Revisar factura proveedor Ibernova", client: "Ibernova Solar S.L.", status: "pendiente", due: "Hoy" },
+      { id: uid(), title: "Solicitar justificante bancario", client: "Restauración Norte S.L.", status: "pendiente", due: "Mañana" },
+      { id: uid(), title: "Preparar borrador Modelo 303", client: "Ibernova Solar S.L.", status: "en_proceso", due: "Esta semana" },
+      { id: uid(), title: "Validar nóminas de mayo", client: "Restauración Norte S.L.", status: "hecho", due: "Completado" },
+      { id: uid(), title: "Enviar resumen contable", client: "Marta Vidal Studio", status: "en_proceso", due: "Viernes" }
+    ];
+  }
+
+  function seedMessages() {
+    return [
+      { id: uid(), author: "Equipo Colomer", role: "team", text: "Hemos recibido la documentación de mayo. Quedan pendientes dos justificantes.", date: addDays(-2).toISOString() },
+      { id: uid(), author: "Cliente Demo", role: "client", text: "Perfecto, los subo esta tarde al Hub.", date: addDays(-2).toISOString() },
+      { id: uid(), author: "Equipo Colomer", role: "team", text: "Gracias. Una vez revisados, actualizaremos el estado en la bandeja documental.", date: addDays(-1).toISOString() }
+    ];
+  }
+
+  function addDays(days) {
+    const d = new Date();
+    d.setDate(d.getDate() + days);
+    return d;
+  }
+
+  function uid() {
+    return "id_" + Math.random().toString(36).slice(2, 10);
+  }
+
+  function setText(id, text) {
+    const el = document.getElementById(id);
+    if (el) el.textContent = text;
+  }
+
+  function updateDemoLabels() {
+    const days = getDaysLeft();
+    const text = days === 1 ? "1 día restante" : `${days} días restantes`;
+    setText("demoDaysLeft", text);
+    setText("sidebarDaysLeft", text);
+  }
+
+  function toast(message) {
+    const el = document.getElementById("toast");
+    if (!el) return;
+    el.textContent = message;
+    el.classList.add("show");
+    window.clearTimeout(toast._timer);
+    toast._timer = window.setTimeout(() => el.classList.remove("show"), 3600);
+  }
+
+  function setupPublicSite() {
+    const menuBtn = document.getElementById("mobileMenuBtn");
+    const header = document.querySelector(".site-header");
+    if (menuBtn && header) {
+      menuBtn.addEventListener("click", () => header.classList.toggle("open"));
+    }
+
+    const leadForm = document.getElementById("leadForm");
+    if (leadForm) {
+      leadForm.addEventListener("submit", (e) => {
+        e.preventDefault();
+        const form = new FormData(leadForm);
+        const lead = {
+          id: uid(),
+          date: new Date().toISOString(),
+          name: String(form.get("name") || "").trim(),
+          email: String(form.get("email") || "").trim(),
+          service: String(form.get("service") || "").trim(),
+          message: String(form.get("message") || "").trim(),
+          status: "nuevo"
+        };
+
+        const leads = read(KEYS.leads, seedLeads());
+        leads.unshift(lead);
+        write(KEYS.leads, leads);
+
+        leadForm.reset();
+        toast("Solicitud demo guardada. Ya aparece en el Hub como nuevo lead.");
+      });
+    }
+  }
+
+  let role = localStorage.getItem(KEYS.session) || "team";
+  let currentView = location.hash ? location.hash.replace("#", "") : "dashboard";
+
+  function setupHub() {
+    const login = document.getElementById("loginScreen");
+    const shell = document.getElementById("hubShell");
+    const expired = document.getElementById("expiredScreen");
+
+    if (!login || !shell) return;
+
+    if (isExpired()) {
+      login.hidden = true;
+      shell.hidden = true;
+      if (expired) expired.hidden = false;
+      return;
+    }
+
+    const session = localStorage.getItem(KEYS.session);
+    if (session) showHub(session);
+
+    const loginForm = document.getElementById("loginForm");
+    if (loginForm) {
+      loginForm.addEventListener("submit", (e) => {
+        e.preventDefault();
+        const data = new FormData(loginForm);
+        const email = String(data.get("email") || "").trim();
+        const pass = String(data.get("password") || "").trim();
+        const selectedRole = String(data.get("role") || "team");
+
+        if (email !== "demo@colomerhub.es" || pass !== "demo2026") {
+          toast("Credenciales incorrectas. Usa demo@colomerhub.es · demo2026");
+          return;
+        }
+        showHub(selectedRole);
+      });
+    }
+
+    const resetBtn = document.getElementById("resetDemoBtn");
+    if (resetBtn) {
+      resetBtn.addEventListener("click", () => {
+        resetDemoData(true);
+        toast("Datos demo reiniciados.");
+      });
+    }
+
+    const extendBtn = document.getElementById("extendDemoBtn");
+    if (extendBtn) {
+      extendBtn.addEventListener("click", () => {
+        resetDemoData(true);
+        location.reload();
+      });
+    }
+  }
+
+  function showHub(selectedRole) {
+    role = selectedRole;
+    localStorage.setItem(KEYS.session, role);
+
+    const login = document.getElementById("loginScreen");
+    const shell = document.getElementById("hubShell");
+    const expired = document.getElementById("expiredScreen");
+    if (expired) expired.hidden = true;
+    if (login) login.hidden = true;
+    if (shell) shell.hidden = false;
+
+    configureRole();
+    bindHubEvents();
+    renderAll();
+
+    const initialView = document.getElementById(`view-${currentView}`) ? currentView : "dashboard";
+    switchView(initialView);
+  }
+
+  let eventsBound = false;
+
+  function bindHubEvents() {
+    if (eventsBound) return;
+    eventsBound = true;
+
+    document.querySelectorAll("#hubNav button").forEach((btn) => {
+      btn.addEventListener("click", () => {
+        const view = btn.dataset.view;
+        switchView(view);
+      });
+    });
+
+    const logoutBtn = document.getElementById("logoutBtn");
+    if (logoutBtn) {
+      logoutBtn.addEventListener("click", () => {
+        localStorage.removeItem(KEYS.session);
+        location.href = "hub.html";
+      });
+    }
+
+    const roleToggleBtn = document.getElementById("roleToggleBtn");
+    if (roleToggleBtn) {
+      roleToggleBtn.addEventListener("click", () => {
+        role = role === "team" ? "client" : "team";
+        localStorage.setItem(KEYS.session, role);
+        configureRole();
+        renderAll();
+        switchView("dashboard");
+        toast(role === "team" ? "Vista de equipo activada." : "Vista de cliente activada.");
+      });
+    }
+
+    const docForm = document.getElementById("documentForm");
+    if (docForm) {
+      docForm.addEventListener("submit", (e) => {
+        e.preventDefault();
+        const form = new FormData(docForm);
+        const docs = read(KEYS.docs, []);
+        docs.unshift({
+          id: uid(),
+          name: String(form.get("filename") || "").trim(),
+          client: String(form.get("client") || "").trim(),
+          type: String(form.get("type") || "").trim(),
+          status: "recibido",
+          date: new Date().toISOString()
+        });
+        write(KEYS.docs, docs);
+        docForm.reset();
+        renderAll();
+        toast("Documento registrado en la bandeja demo.");
+      });
+    }
+
+    const addLeadBtn = document.getElementById("addDemoLeadBtn");
+    if (addLeadBtn) {
+      addLeadBtn.addEventListener("click", () => {
+        const leads = read(KEYS.leads, []);
+        leads.unshift({
+          id: uid(),
+          date: new Date().toISOString(),
+          name: "Nuevo Lead Demo " + Math.floor(Math.random() * 90 + 10),
+          email: "lead.demo@empresa.es",
+          service: ["Fiscal", "Laboral", "Contable", "Mercantil"][Math.floor(Math.random() * 4)],
+          message: "Solicitud ficticia creada desde el Hub para mostrar el flujo.",
+          status: "nuevo"
+        });
+        write(KEYS.leads, leads);
+        renderAll();
+        toast("Lead ficticio añadido.");
+      });
+    }
+
+    const exportBtn = document.getElementById("exportDocsBtn");
+    if (exportBtn) {
+      exportBtn.addEventListener("click", () => {
+        const docs = read(KEYS.docs, []);
+        const blob = new Blob([JSON.stringify(docs, null, 2)], { type: "application/json" });
+        const url = URL.createObjectURL(blob);
+        const a = document.createElement("a");
+        a.href = url;
+        a.download = "colomer-documentos-demo.json";
+        a.click();
+        URL.revokeObjectURL(url);
+      });
+    }
+
+    const aiForm = document.getElementById("aiForm");
+    if (aiForm) {
+      aiForm.addEventListener("submit", (e) => {
+        e.preventDefault();
+        const form = new FormData(aiForm);
+        renderAiResult(String(form.get("docId")), String(form.get("mode")));
+      });
+    }
+
+    const msgForm = document.getElementById("messageForm");
+    if (msgForm) {
+      msgForm.addEventListener("submit", (e) => {
+        e.preventDefault();
+        const form = new FormData(msgForm);
+        const text = String(form.get("message") || "").trim();
+        if (!text) return;
+
+        const messages = read(KEYS.messages, []);
+        messages.push({
+          id: uid(),
+          author: role === "team" ? "Equipo Colomer" : "Cliente Demo",
+          role,
+          text,
+          date: new Date().toISOString()
+        });
+        write(KEYS.messages, messages);
+        msgForm.reset();
+        renderMessages();
+        toast("Mensaje demo añadido.");
+      });
+    }
+  }
+
+  function configureRole() {
+    setText("roleLabel", role === "team" ? "Equipo" : "Cliente");
+    const toggle = document.getElementById("roleToggleBtn");
+    if (toggle) toggle.textContent = role === "team" ? "Cambiar a cliente" : "Cambiar a equipo";
+    document.querySelectorAll("[data-team-only]").forEach((el) => {
+      el.hidden = role !== "team";
+    });
+
+    if (role !== "team" && ["leads", "clients"].includes(currentView)) {
+      currentView = "dashboard";
+    }
+  }
+
+  function switchView(view) {
+    if (role !== "team" && ["leads", "clients"].includes(view)) view = "dashboard";
+    currentView = view;
+
+    document.querySelectorAll(".hub-view").forEach((el) => el.classList.remove("active"));
+    const viewEl = document.getElementById(`view-${view}`);
+    if (viewEl) viewEl.classList.add("active");
+
+    document.querySelectorAll("#hubNav button").forEach((btn) => {
+      btn.classList.toggle("active", btn.dataset.view === view);
+    });
+
     const titles = {
-      dashboard: "Panel de control",
-      crm: "CRM de leads",
+      dashboard: "Dashboard",
+      leads: "Leads web",
       clients: "Clientes",
-      documents: "Bandeja documental",
-      ai: "Lectura IA simulada",
+      documents: "Documentos",
+      ai: "IA asistida",
+      tasks: "Tareas",
       calendar: "Vencimientos",
-      messages: "Mensajes",
-      settings: "Control demo"
+      messages: "Mensajes"
     };
-    const title = $("#viewTitle");
-    if (title) title.textContent = titles[view] || "Colomer Hub";
+    setText("viewTitle", titles[view] || "Dashboard");
+    if (history.replaceState) history.replaceState(null, "", `#${view}`);
   }
 
-  function renderHub() {
-    renderKPIs();
+  function renderAll() {
+    updateDemoLabels();
+    renderStats();
     renderActivity();
+    renderDonut();
+    renderUpcoming();
     renderLeads();
     renderClients();
     renderDocuments();
-    renderAIPanel();
-    renderDeadlines();
+    renderClientSelects();
+    renderKanban();
+    renderCalendar();
     renderMessages();
   }
 
-  function renderKPIs() {
-    const leads = getJSON(LEADS_KEY, []);
-    const docs = getJSON(DOCS_KEY, []);
-    const ai = getJSON(`${KEY_PREFIX}:ai`, null);
-    const pending = docs.filter(d => /Pendiente|Recibido/i.test(d.status)).length + (ai?.status === "Pendiente de revisión" ? 1 : 0);
-    const hours = Math.max(0, Math.round((docs.length * 0.35 + leads.length * 0.2 + (ai ? 0.4 : 0)) * 10) / 10);
-    setText('[data-kpi="leads"]', leads.length);
-    setText('[data-kpi="docs"]', docs.length);
-    setText('[data-kpi="pending"]', pending);
-    setText('[data-kpi="hours"]', `${hours}h`);
-  }
+  function renderStats() {
+    const docs = filteredDocs();
+    const leads = read(KEYS.leads, []);
+    const tasks = read(KEYS.tasks, []);
+    const clients = role === "team" ? read(KEYS.clients, []) : [read(KEYS.clients, [])[0]].filter(Boolean);
 
-  function setText(sel, value) {
-    const el = $(sel);
-    if (el) el.textContent = value;
+    const pendingDocs = docs.filter(d => ["pendiente", "recibido", "falta"].includes(d.status)).length;
+    const doneDocs = docs.filter(d => ["revisado", "validado"].includes(d.status)).length;
+    const openTasks = tasks.filter(t => t.status !== "hecho").length;
+
+    const items = role === "team"
+      ? [
+          ["Clientes activos", clients.length, "Base operativa"],
+          ["Leads web", leads.length, "Entradas desde web"],
+          ["Docs pendientes", pendingDocs, "Requieren revisión"],
+          ["Tareas abiertas", openTasks, "Equipo Colomer"]
+        ]
+      : [
+          ["Documentos", docs.length, "En tu área"],
+          ["Validados", doneDocs, "Revisados"],
+          ["Pendientes", pendingDocs, "En seguimiento"],
+          ["Vencimientos", 3, "Próximos avisos"]
+        ];
+
+    const row = document.getElementById("statsRow");
+    if (!row) return;
+    row.innerHTML = items.map(([label, value, note]) => `
+      <div class="stat-card">
+        <span>${escapeHtml(label)}</span>
+        <b>${escapeHtml(String(value))}</b>
+        <em>${escapeHtml(note)}</em>
+      </div>
+    `).join("");
   }
 
   function renderActivity() {
-    const feed = $("#activityFeed");
+    const docs = filteredDocs().slice(0, 4);
+    const leads = read(KEYS.leads, []).slice(0, 2);
+    const feed = document.getElementById("activityFeed");
     if (!feed) return;
-    const items = getJSON(ACTIVITY_KEY, []);
-    feed.innerHTML = items.length ? items.map(item => `
-      <div class="activity-item"><span></span><div><b>${escapeHTML(item.title)}</b><small>${escapeHTML(item.detail)} · ${escapeHTML(item.time || "")}</small></div></div>
-    `).join("") : `<p class="small">Sin actividad todavía. Genera datos demo para visualizar el flujo.</p>`;
+
+    const activity = [
+      ...docs.map(d => ({
+        title: `${d.name}`,
+        meta: `${d.client} · ${labelStatus(d.status)} · ${fmtTime(d.date)}`,
+        dot: d.status === "falta" ? "danger" : d.status === "validado" ? "ok" : "warn"
+      })),
+      ...(role === "team" ? leads.map(l => ({
+        title: `Nuevo lead: ${l.name}`,
+        meta: `${l.service} · ${fmtTime(l.date)}`,
+        dot: "info"
+      })) : [])
+    ].slice(0, 6);
+
+    feed.innerHTML = activity.map(item => `
+      <div class="activity-item">
+        <b><span class="status-dot ${item.dot}"></span>${escapeHtml(item.title)}</b>
+        <span>${escapeHtml(item.meta)}</span>
+      </div>
+    `).join("");
+  }
+
+  function renderDonut() {
+    const docs = filteredDocs();
+    const done = docs.filter(d => ["revisado", "validado"].includes(d.status)).length;
+    const pct = docs.length ? Math.round(done / docs.length * 100) : 0;
+    const donut = document.getElementById("docDonut");
+    const text = document.getElementById("docDonutText");
+    const legend = document.getElementById("docLegend");
+
+    if (donut) donut.style.setProperty("--p", pct);
+    if (text) text.textContent = `${pct}%`;
+    if (legend) {
+      legend.innerHTML = `
+        <div><span><span class="status-dot ok"></span>Revisados/validados</span><b>${done}</b></div>
+        <div><span><span class="status-dot warn"></span>Pendientes</span><b>${Math.max(0, docs.length - done)}</b></div>
+      `;
+    }
+  }
+
+  function renderUpcoming() {
+    const list = document.getElementById("upcomingList");
+    if (!list) return;
+    const items = [
+      ["Modelo 303", "IVA trimestral · Ibernova Solar S.L. · 18/07/2026"],
+      ["IRPF trimestral", "Marta Vidal Studio · 20/07/2026"],
+      ["Seguros sociales", "Restauración Norte S.L. · 30/06/2026"]
+    ];
+
+    list.innerHTML = items.map(([title, meta]) => `
+      <div class="mini-item">
+        <b>${escapeHtml(title)}</b>
+        <span>${escapeHtml(meta)}</span>
+      </div>
+    `).join("");
   }
 
   function renderLeads() {
-    const tbody = $("#leadTable");
+    const tbody = document.querySelector("#leadsTable tbody");
     if (!tbody) return;
-    const leads = getJSON(LEADS_KEY, []);
-    tbody.innerHTML = leads.length ? leads.map((lead, i) => `
+    const leads = read(KEYS.leads, []);
+    tbody.innerHTML = leads.map(lead => `
       <tr>
-        <td><strong>${escapeHTML(lead.name || "Lead demo")}</strong></td>
-        <td>${escapeHTML(lead.company || "Empresa demo")}</td>
-        <td>${escapeHTML(lead.service || "Servicio")}</td>
-        <td><span class="badge ${lead.urgency === "Alta" ? "warn" : ""}">${escapeHTML(lead.urgency || "Normal")}</span></td>
-        <td>${escapeHTML(lead.status || "Nuevo")}</td>
-        <td>${escapeHTML(lead.channel || "Web")}</td>
-        <td><button class="action-mini" data-advance-lead="${i}">Avanzar</button></td>
+        <td>${fmt(lead.date)}</td>
+        <td><strong>${escapeHtml(lead.name)}</strong><br><small>${escapeHtml(lead.message || "")}</small></td>
+        <td>${escapeHtml(lead.service)}</td>
+        <td>${escapeHtml(lead.email)}</td>
+        <td><span class="badge ${escapeHtml(lead.status)}">${escapeHtml(labelStatus(lead.status))}</span></td>
+        <td><button class="inline-btn" data-lead-id="${escapeHtml(lead.id)}">Avanzar</button></td>
       </tr>
-    `).join("") : `<tr><td colspan="7">Todavía no hay leads. Envía el formulario de la web o crea uno de ejemplo.</td></tr>`;
-    $$("[data-advance-lead]").forEach(btn => btn.addEventListener("click", () => {
-      const all = getJSON(LEADS_KEY, []);
-      const lead = all[Number(btn.dataset.advanceLead)];
-      const states = ["Nuevo", "Contactar", "Reunión", "Propuesta", "Ganado"];
-      const current = states.indexOf(lead.status);
-      lead.status = states[Math.min(states.length - 1, current + 1)];
-      setJSON(LEADS_KEY, all);
-      addActivity("Lead actualizado", `${lead.company} pasa a estado ${lead.status}.`);
-      renderHub();
-    }));
+    `).join("");
+
+    tbody.querySelectorAll("[data-lead-id]").forEach(btn => {
+      btn.addEventListener("click", () => {
+        const id = btn.dataset.leadId;
+        const leads = read(KEYS.leads, []);
+        const lead = leads.find(l => l.id === id);
+        if (lead) {
+          lead.status = lead.status === "nuevo" ? "contactado" : lead.status === "contactado" ? "convertido" : "nuevo";
+          write(KEYS.leads, leads);
+          renderAll();
+          toast("Estado del lead actualizado.");
+        }
+      });
+    });
   }
 
   function renderClients() {
-    const list = $("#clientList");
-    const detail = $("#clientDetail");
-    if (!list || !detail) return;
-    const selected = Number(localStorage.getItem(CLIENT_KEY) || 0);
-    list.innerHTML = seedClients.map((c, i) => `
-      <button class="client-button ${i === selected ? "active" : ""}" data-client="${i}">
-        <b>${escapeHTML(c.name)}</b><span>${escapeHTML(c.type)} · ${escapeHTML(c.status)}</span>
-      </button>
-    `).join("");
-    $$("[data-client]").forEach(btn => btn.addEventListener("click", () => {
-      localStorage.setItem(CLIENT_KEY, btn.dataset.client);
-      renderClients();
-    }));
-    const c = seedClients[selected] || seedClients[0];
-    detail.innerHTML = `
-      <span class="eyebrow">Ficha cliente</span>
-      <h2>${escapeHTML(c.name)}</h2>
-      <p>${escapeHTML(c.type)} · Responsable: <strong>${escapeHTML(c.manager)}</strong></p>
-      <div class="client-detail-grid">
-        <div><b>${c.docs}</b><span>documentos</span></div>
-        <div><b>${c.pending}</b><span>pendientes</span></div>
-        <div><b>${escapeHTML(c.next)}</b><span>próxima acción</span></div>
-      </div>
-      <h3>Estado</h3>
-      <p>${escapeHTML(c.status)}</p>
-      <div class="activity-feed">
-        <div class="activity-item"><span></span><div><b>Documentación trimestral</b><small>Revisar facturas pendientes y validar IVA.</small></div></div>
-        <div class="activity-item"><span></span><div><b>Aviso automático</b><small>Recordatorio preparado para cliente.</small></div></div>
-      </div>
-    `;
-  }
-
-  function renderDocuments() {
-    const queue = $("#documentQueue");
-    if (!queue) return;
-    const docs = getJSON(DOCS_KEY, []);
-    queue.innerHTML = docs.length ? docs.map((doc, i) => `
-      <div class="queue-item">
-        <span class="doc-icon">${doc.type?.includes("Factura") ? "PDF" : doc.type?.includes("Ticket") ? "IMG" : "DOC"}</span>
-        <div class="meta"><b>${escapeHTML(doc.file || "documento-demo.pdf")}</b><small>${escapeHTML(doc.client)} · ${escapeHTML(doc.type)} · ${escapeHTML(doc.period || "Demo")} · ${escapeHTML(doc.created || "")}</small></div>
-        <span class="badge ${/Pendiente|Recibido/i.test(doc.status) ? "warn" : "ok"}">${escapeHTML(doc.status)}</span>
-      </div>
-    `).join("") : `<p class="small">Sin documentos. Sube un documento demo para iniciar el flujo.</p>`;
-  }
-
-  function generateAIReading() {
-    const suppliers = ["Suministros Castellana S.L.", "IberOffice Proveedores", "Servicios Madrid Centro", "Global Telecom Empresas"];
-    const supplier = suppliers[Math.floor(Math.random() * suppliers.length)];
-    const base = Math.floor(180 + Math.random() * 1800);
-    const iva = Math.round(base * 0.21 * 100) / 100;
-    const total = Math.round((base + iva) * 100) / 100;
-    return {
-      file: "factura-demo-" + Math.floor(1000 + Math.random() * 9000) + ".pdf",
-      supplier,
-      date: todayLabel(),
-      invoice: "F-" + Math.floor(10000 + Math.random() * 90000),
-      base: base.toLocaleString("es-ES", { style:"currency", currency:"EUR" }),
-      iva: iva.toLocaleString("es-ES", { style:"currency", currency:"EUR" }),
-      total: total.toLocaleString("es-ES", { style:"currency", currency:"EUR" }),
-      category: "Servicios exteriores",
-      confidence: Math.floor(86 + Math.random() * 10),
-      status: "Pendiente de revisión"
-    };
-  }
-
-  function renderAIPanel() {
-    const panel = $("#aiPanel");
-    if (!panel) return;
-    const ai = getJSON(`${KEY_PREFIX}:ai`, null);
-    if (!ai) {
-      panel.innerHTML = `<p class="small">Todavía no se ha simulado ninguna lectura. Pulsa “Simular lectura” para generar una factura ficticia.</p>`;
-      return;
-    }
-    panel.innerHTML = `
-      <div class="ai-field"><span>Archivo</span><strong>${escapeHTML(ai.file)}</strong></div>
-      <div class="ai-field"><span>Proveedor</span><strong>${escapeHTML(ai.supplier)}</strong></div>
-      <div class="ai-field"><span>Fecha</span><strong>${escapeHTML(ai.date)}</strong></div>
-      <div class="ai-field"><span>Nº factura</span><strong>${escapeHTML(ai.invoice)}</strong></div>
-      <div class="ai-field"><span>Base</span><strong>${escapeHTML(ai.base)}</strong></div>
-      <div class="ai-field"><span>IVA</span><strong>${escapeHTML(ai.iva)}</strong></div>
-      <div class="ai-field"><span>Total</span><strong>${escapeHTML(ai.total)}</strong></div>
-      <div class="ai-field"><span>Categoría</span><strong>${escapeHTML(ai.category)}</strong></div>
-      <div class="ai-field"><span>Estado</span><strong>${escapeHTML(ai.status)}</strong></div>
-      <div>
-        <div class="ai-field"><span>Confianza simulada</span><strong>${ai.confidence}%</strong></div>
-        <div class="ai-confidence"><span style="width:${ai.confidence}%"></span></div>
-      </div>
-    `;
-  }
-
-  function renderDeadlines() {
-    const grid = $("#deadlineGrid");
+    const grid = document.getElementById("clientsGrid");
     if (!grid) return;
-    const items = getJSON(DEADLINES_KEY, []);
-    grid.innerHTML = items.map(d => `
-      <article class="deadline-card">
-        <b>${escapeHTML(d.day)} ${escapeHTML(d.month)}</b>
-        <h3>${escapeHTML(d.title)}</h3>
-        <p>${escapeHTML(d.client)}</p>
-        <span>${escapeHTML(d.status)}</span>
+    const clients = read(KEYS.clients, []);
+    grid.innerHTML = clients.map(c => `
+      <article class="client-card">
+        <h2>${escapeHtml(c.name)}</h2>
+        <p>${escapeHtml(c.type)} · ${escapeHtml(c.status)}</p>
+        <div class="client-meta">
+          <div><span>Responsable</span><b>${escapeHtml(c.manager)}</b></div>
+          <div><span>Riesgo</span><b>${escapeHtml(c.risk)}</b></div>
+          <div><span>Documentos</span><b>${escapeHtml(String(c.docs))}</b></div>
+          <div><span>Pendientes</span><b>${escapeHtml(String(c.pending))}</b></div>
+        </div>
+        <p><strong>Próximo:</strong> ${escapeHtml(c.next)}</p>
       </article>
     `).join("");
   }
 
-  function renderMessages() {
-    const list = $("#messageList");
-    if (!list) return;
-    const items = getJSON(MESSAGES_KEY, []);
-    list.innerHTML = items.length ? items.map(m => `
-      <div class="message-item">
-        <b>${escapeHTML(m.client)} · ${escapeHTML(m.from)}</b>
-        <p>${escapeHTML(m.message)}</p>
-        <small>${escapeHTML(m.date)}</small>
+  function filteredDocs() {
+    const docs = read(KEYS.docs, []);
+    if (role === "team") return docs;
+    const firstClient = read(KEYS.clients, [])[0];
+    return firstClient ? docs.filter(d => d.client === firstClient.name) : docs.slice(0, 3);
+  }
+
+  function renderDocuments() {
+    const tbody = document.querySelector("#documentsTable tbody");
+    if (!tbody) return;
+
+    const docs = filteredDocs();
+    tbody.innerHTML = docs.map(doc => `
+      <tr>
+        <td><strong>${escapeHtml(doc.name)}</strong></td>
+        <td>${escapeHtml(doc.client)}</td>
+        <td>${escapeHtml(doc.type)}</td>
+        <td><span class="badge ${escapeHtml(doc.status)}">${escapeHtml(labelStatus(doc.status))}</span></td>
+        <td>${fmt(doc.date)}</td>
+        <td>${role === "team" ? `<button class="inline-btn" data-doc-id="${escapeHtml(doc.id)}">Cambiar estado</button>` : "—"}</td>
+      </tr>
+    `).join("");
+
+    tbody.querySelectorAll("[data-doc-id]").forEach(btn => {
+      btn.addEventListener("click", () => {
+        const docs = read(KEYS.docs, []);
+        const doc = docs.find(d => d.id === btn.dataset.docId);
+        if (doc) {
+          const sequence = ["recibido", "pendiente", "revisado", "validado", "falta"];
+          const i = sequence.indexOf(doc.status);
+          doc.status = sequence[(i + 1) % sequence.length];
+          write(KEYS.docs, docs);
+          renderAll();
+          toast("Estado documental actualizado.");
+        }
+      });
+    });
+  }
+
+  function renderClientSelects() {
+    const allClients = read(KEYS.clients, []);
+    const clients = role === "team" ? allClients : allClients.slice(0, 1);
+    const select = document.getElementById("clientSelect");
+    if (select) {
+      select.innerHTML = clients.map(c => `<option>${escapeHtml(c.name)}</option>`).join("");
+    }
+
+    const aiSelect = document.getElementById("aiDocumentSelect");
+    if (aiSelect) {
+      const docs = filteredDocs();
+      aiSelect.innerHTML = docs.map(d => `<option value="${escapeHtml(d.id)}">${escapeHtml(d.name)} · ${escapeHtml(d.client)}</option>`).join("");
+    }
+  }
+
+  function renderAiResult(docId, mode) {
+    const docs = filteredDocs();
+    const doc = docs.find(d => d.id === docId) || docs[0];
+    const card = document.getElementById("aiResultCard");
+    if (!card || !doc) return;
+
+    const modes = {
+      invoice: {
+        title: "Lectura de factura",
+        fields: [
+          ["Proveedor", "Proveedor Demo S.L."],
+          ["Fecha", "12/06/2026"],
+          ["Base imponible", "1.240,00 €"],
+          ["IVA", "260,40 €"],
+          ["Total", "1.500,40 €"],
+          ["Categoría", "Servicios profesionales"]
+        ],
+        alert: "Revisar que el NIF y el concepto coinciden con la actividad."
+      },
+      contract: {
+        title: "Lectura de contrato",
+        fields: [
+          ["Tipo", "Contrato laboral indefinido"],
+          ["Fecha inicio", "01/07/2026"],
+          ["Jornada", "40 horas"],
+          ["Categoría", "Administración"],
+          ["Periodo prueba", "2 meses"],
+          ["Observación", "Pendiente firma digital"]
+        ],
+        alert: "Validar cláusulas y datos laborales antes de registrar."
+      },
+      payroll: {
+        title: "Lectura de nómina",
+        fields: [
+          ["Empleado", "Persona Demo"],
+          ["Periodo", "Junio 2026"],
+          ["Devengos", "2.100,00 €"],
+          ["Deducciones", "420,00 €"],
+          ["Líquido", "1.680,00 €"],
+          ["Estado", "Coherente"]
+        ],
+        alert: "Revisión humana obligatoria antes de validación final."
+      },
+      tax: {
+        title: "Lectura de modelo fiscal",
+        fields: [
+          ["Modelo", "303"],
+          ["Periodo", "2T 2026"],
+          ["IVA devengado", "4.280,00 €"],
+          ["IVA deducible", "2.960,00 €"],
+          ["Resultado", "1.320,00 €"],
+          ["Estado", "Borrador"]
+        ],
+        alert: "Comprobar conciliación con libros antes de presentar."
+      }
+    };
+
+    const result = modes[mode] || modes.invoice;
+    const confidence = Math.floor(86 + Math.random() * 10);
+
+    card.innerHTML = `
+      <div class="ai-output">
+        <div class="card-head">
+          <div>
+            <h2>${escapeHtml(result.title)}</h2>
+            <p>${escapeHtml(doc.name)} · ${escapeHtml(doc.client)}</p>
+          </div>
+          <span class="pill">${confidence}% confianza demo</span>
+        </div>
+        <div>
+          <p><strong>Nivel de confianza simulado</strong></p>
+          <div class="confidence"><span style="width:${confidence}%"></span></div>
+        </div>
+        <div class="extracted-grid">
+          ${result.fields.map(([k, v]) => `
+            <div><span>${escapeHtml(k)}</span><b>${escapeHtml(v)}</b></div>
+          `).join("")}
+        </div>
+        <p class="risk-note"><strong>Observación:</strong> ${escapeHtml(result.alert)}</p>
+        <button class="btn btn-primary" id="validateAiBtn" type="button">Marcar como revisado</button>
       </div>
-    `).join("") : `<p class="small">Sin mensajes todavía.</p>`;
+    `;
+
+    const validateBtn = document.getElementById("validateAiBtn");
+    if (validateBtn) {
+      validateBtn.addEventListener("click", () => {
+        const allDocs = read(KEYS.docs, []);
+        const found = allDocs.find(d => d.id === doc.id);
+        if (found) {
+          found.status = "revisado";
+          write(KEYS.docs, allDocs);
+          renderAll();
+          toast("Documento marcado como revisado.");
+        }
+      });
+    }
   }
 
-  function escapeHTML(value) {
-    return String(value ?? "").replace(/[&<>"']/g, (m) => ({ "&":"&amp;", "<":"&lt;", ">":"&gt;", '"':"&quot;", "'":"&#039;" }[m]));
+  function renderKanban() {
+    const board = document.getElementById("kanbanBoard");
+    if (!board) return;
+    const tasks = read(KEYS.tasks, []);
+    const cols = [
+      ["pendiente", "Pendiente"],
+      ["en_proceso", "En proceso"],
+      ["hecho", "Hecho"]
+    ];
+
+    board.innerHTML = cols.map(([key, title]) => `
+      <section class="kanban-column">
+        <h2>${escapeHtml(title)}</h2>
+        ${tasks.filter(t => t.status === key).map(t => `
+          <article class="task-card">
+            <b>${escapeHtml(t.title)}</b>
+            <span>${escapeHtml(t.client)}</span>
+            <span>${escapeHtml(t.due)}</span>
+            ${role === "team" ? `<button class="inline-btn" data-task-id="${escapeHtml(t.id)}">Mover</button>` : ""}
+          </article>
+        `).join("") || `<p class="form-note">Sin tareas en esta columna.</p>`}
+      </section>
+    `).join("");
+
+    board.querySelectorAll("[data-task-id]").forEach(btn => {
+      btn.addEventListener("click", () => {
+        const tasks = read(KEYS.tasks, []);
+        const task = tasks.find(t => t.id === btn.dataset.taskId);
+        if (task) {
+          task.status = task.status === "pendiente" ? "en_proceso" : task.status === "en_proceso" ? "hecho" : "pendiente";
+          write(KEYS.tasks, tasks);
+          renderKanban();
+          renderStats();
+          toast("Tarea movida.");
+        }
+      });
+    });
   }
 
-  bindCommon();
-  if (page === "web") initWeb();
-  if (page === "hub") initHub();
+  function renderCalendar() {
+    const list = document.getElementById("calendarList");
+    if (!list) return;
+
+    const events = [
+      { title: "Modelo 303 · IVA trimestral", client: "Ibernova Solar S.L.", date: "18 julio 2026", type: "Fiscal" },
+      { title: "IRPF trimestral", client: "Marta Vidal Studio", date: "20 julio 2026", type: "Fiscal" },
+      { title: "Seguros sociales", client: "Restauración Norte S.L.", date: "30 junio 2026", type: "Laboral" },
+      { title: "Cierre contable mensual", client: "Ibernova Solar S.L.", date: "5 julio 2026", type: "Contable" },
+      { title: "Revisión contrato trabajador", client: "Restauración Norte S.L.", date: "27 junio 2026", type: "Laboral" }
+    ];
+
+    const filtered = role === "team" ? events : events.filter(e => e.client === "Ibernova Solar S.L.");
+
+    list.innerHTML = filtered.map(e => `
+      <div class="calendar-item">
+        <b><span class="status-dot info"></span>${escapeHtml(e.title)}</b>
+        <span>${escapeHtml(e.client)} · ${escapeHtml(e.date)} · ${escapeHtml(e.type)}</span>
+      </div>
+    `).join("");
+  }
+
+  function renderMessages() {
+    const thread = document.getElementById("messageThread");
+    if (!thread) return;
+    const messages = read(KEYS.messages, []);
+
+    thread.innerHTML = messages.map(m => `
+      <div class="message-bubble ${m.role === role ? "me" : ""}">
+        <b>${escapeHtml(m.author)}</b>
+        ${escapeHtml(m.text)}
+        <span>${fmtTime(m.date)}</span>
+      </div>
+    `).join("");
+
+    thread.scrollTop = thread.scrollHeight;
+  }
+
+  function labelStatus(status) {
+    const labels = {
+      recibido: "Recibido",
+      pendiente: "Pendiente",
+      revisado: "Revisado",
+      validado: "Validado",
+      falta: "Falta info",
+      nuevo: "Nuevo",
+      contactado: "Contactado",
+      convertido: "Convertido"
+    };
+    return labels[status] || status;
+  }
+
+  function escapeHtml(str) {
+    return String(str)
+      .replaceAll("&", "&amp;")
+      .replaceAll("<", "&lt;")
+      .replaceAll(">", "&gt;")
+      .replaceAll('"', "&quot;")
+      .replaceAll("'", "&#039;");
+  }
+
+  document.addEventListener("DOMContentLoaded", () => {
+    if (hasResetFlag()) {
+      clearLegacyDemoKeys();
+      resetDemoData(true);
+      const cleanUrl = window.location.pathname + window.location.hash;
+      window.history.replaceState({}, document.title, cleanUrl);
+    }
+
+    getDemoStart();
+    ensureSeedData();
+    updateDemoLabels();
+    setupPublicSite();
+    setupHub();
+  });
 })();
