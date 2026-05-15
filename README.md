@@ -76,7 +76,7 @@ Todos los datos son ficticios. No usar datos reales de clientes en esta demo.
 
 ## Corrección incluida en esta versión
 
-Esta versión usa un namespace propio de `localStorage` para que una demo anterior no aparezca como caducada al subir una nueva versión al mismo dominio de GitHub Pages.
+Esta versión referencia `app-v3-fixed.js` y usa un namespace propio de `localStorage` para que una demo anterior no aparezca como caducada al subir una nueva versión al mismo dominio de GitHub Pages.
 
 Si al abrirla sigue apareciendo una demo finalizada por caché del navegador, usar una de estas opciones:
 
@@ -89,3 +89,24 @@ location.reload();
 ```
 
 El control de 15 días es solo para demo comercial. En producción se debe controlar desde servidor, con usuario, licencia, base de datos y permisos reales.
+
+
+## Corrección v3.1 final
+
+Esta versión corrige el problema por el que podía aparecer `Calculando…` en la barra superior.
+La causa era que el HTML apuntaba a un archivo JavaScript que no siempre se incluía en el ZIP de subida.
+
+En esta versión:
+- `index.html` y `hub.html` cargan `app.js?v=v3-1-final`.
+- `app.js` está incluido en raíz.
+- Se mantiene `app-v3-fixed.js` solo como copia de seguridad.
+- Si vienes de una publicación anterior, abre primero `?resetdemo=1`.
+
+URL recomendada tras publicar:
+`https://2bornot2bai-stack.github.io/Colomer-web/?resetdemo=1`
+
+
+## Corrección v3.2 final
+
+Además de cargar `app.js` correctamente, el texto inicial del contador aparece como `15 días restantes`.
+Así, aunque el navegador tarde en cargar JavaScript, nunca se muestra `Calculando…` en la demo pública.
