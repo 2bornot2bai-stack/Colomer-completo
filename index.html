@@ -1,332 +1,339 @@
 <!doctype html>
-<html lang="es">
+<html lang="es" data-page="web">
 <head>
   <meta charset="utf-8">
   <meta name="viewport" content="width=device-width, initial-scale=1">
   <title>Colomer & Asociados · Asesoría fiscal, laboral y contable</title>
-  <meta name="description" content="Demo premium de una web corporativa con Hub privado para asesoría fiscal, laboral, contable y mercantil.">
+  <meta name="description" content="Asesoría para empresas, autónomos y profesionales con área privada para centralizar documentación, estados y avisos.">
   <link rel="icon" href="favicon.svg" type="image/svg+xml">
-  <link rel="stylesheet" href="styles.css?v=v3-2-final">
+  <link rel="stylesheet" href="styles.css?v=4.0-premium-dark">
+  <script defer src="app.js?v=4.0-premium-dark"></script>
 </head>
-<body class="public-site">
-  <div class="demo-ribbon" id="demoRibbon">
+<body class="site-body">
+  <div class="grain"></div>
+  <div class="demo-ribbon" role="status">
     <span>Demo comercial · 15 días</span>
-    <strong id="demoDaysLeft">15 días restantes</strong>
+    <strong data-demo-days>Activando demo</strong>
+    <button class="ghost-mini" data-reset-demo>Reiniciar</button>
   </div>
 
-  <header class="site-header" id="top">
-    <a class="brand" href="#top" aria-label="Inicio Colomer & Asociados">
+  <header class="topbar">
+    <a class="brand" href="#inicio" aria-label="Colomer & Asociados">
       <span class="brand-mark">C</span>
       <span>
         <strong>Colomer & Asociados</strong>
-        <small>Fiscal · Laboral · Contable · Mercantil</small>
+        <em>Asesores de empresas</em>
       </span>
     </a>
-
-    <nav class="nav" aria-label="Navegación principal">
+    <nav class="nav" data-nav>
       <a href="#servicios">Servicios</a>
       <a href="#metodo">Método</a>
-      <a href="#hub">Colomer Hub</a>
-      <a href="#contacto">Contacto</a>
+      <a href="#area-cliente">Área cliente</a>
+      <a href="#diagnostico">Diagnóstico</a>
+      <a class="nav-pill" href="hub.html">Acceso Hub</a>
     </nav>
-
-    <div class="header-actions">
-      <a class="btn btn-ghost" href="hub.html">Acceso clientes</a>
-      <a class="btn btn-primary" href="#diagnostico">Solicitar diagnóstico</a>
-    </div>
-
-    <button class="mobile-menu" id="mobileMenuBtn" aria-label="Abrir menú">☰</button>
+    <button class="menu-btn" data-menu aria-label="Abrir menú">☰</button>
   </header>
 
-  <main>
-    <section class="hero section-pad">
-      <div class="hero-copy reveal">
-        <p class="eyebrow">Asesoría para empresas, autónomos y profesionales</p>
-        <h1>Una forma más clara, segura y ordenada de gestionar tu negocio.</h1>
-        <p class="hero-text">
-          Acompañamos a empresas y autónomos en sus obligaciones fiscales, laborales y contables,
-          con una atención cercana y una zona privada para centralizar documentación, estados y avisos.
-        </p>
-        <div class="hero-actions">
-          <a class="btn btn-primary btn-large" href="#diagnostico">Quiero una primera valoración</a>
-          <a class="btn btn-ghost btn-large" href="hub.html">Ver área cliente demo</a>
-        </div>
-
-        <div class="trust-row" aria-label="Señales de confianza">
-          <div>
-            <b>Documentación</b>
-            <span>Ordenada por estados</span>
-          </div>
-          <div>
-            <b>Seguimiento</b>
-            <span>Avisos y vencimientos</span>
-          </div>
-          <div>
-            <b>Atención</b>
-            <span>Equipo profesional</span>
-          </div>
-        </div>
+  <main id="inicio">
+    <section class="hero section-dark">
+      <div class="hero-bg">
+        <span class="orb orb-a"></span>
+        <span class="orb orb-b"></span>
+        <span class="line-grid"></span>
       </div>
 
-      <div class="hero-panel reveal delay-1" aria-label="Vista previa del Hub Colomer">
-        <div class="window-bar">
-          <span></span><span></span><span></span>
-          <small>Colomer Hub · Panel de cliente</small>
-        </div>
-        <div class="mock-dashboard">
-          <div class="mock-card accent">
-            <small>Estado general</small>
-            <b>Documentación Q2 recibida</b>
-            <em>3 documentos pendientes de revisión</em>
+      <div class="container hero-grid">
+        <div class="hero-copy reveal">
+          <p class="eyebrow">Fiscal · Laboral · Contable · Mercantil</p>
+          <h1>Una asesoría más clara, segura y ordenada para empresas que quieren crecer.</h1>
+          <p class="hero-lead">
+            Acompañamos a empresas, autónomos y profesionales con un servicio cercano, riguroso y una zona privada donde cada cliente puede centralizar documentación, estados y avisos.
+          </p>
+          <div class="hero-actions">
+            <a class="btn btn-gold" href="#diagnostico">Solicitar valoración</a>
+            <a class="btn btn-glass" href="hub.html">Ver área cliente demo</a>
           </div>
-          <div class="mock-grid">
-            <div class="mock-card">
-              <small>Próximo vencimiento</small>
-              <b>Modelo 303</b>
-              <em>En 8 días</em>
-            </div>
-            <div class="mock-card">
-              <small>Mensajes</small>
-              <b>2 novedades</b>
-              <em>Laboral y fiscal</em>
-            </div>
-          </div>
-          <div class="activity-list">
-            <div><span class="status-dot ok"></span>Factura de proveedor validada</div>
-            <div><span class="status-dot warn"></span>Contrato laboral pendiente</div>
-            <div><span class="status-dot info"></span>Nuevo aviso fiscal publicado</div>
+
+          <div class="signal-row">
+            <div><strong>+ orden</strong><span>documentación por estados</span></div>
+            <div><strong>+ control</strong><span>avisos y vencimientos</span></div>
+            <div><strong>+ confianza</strong><span>imagen profesional</span></div>
           </div>
         </div>
+
+        <aside class="hero-product reveal delay-1" aria-label="Vista preliminar del Hub">
+          <div class="screen-card">
+            <div class="screen-top">
+              <span></span><span></span><span></span>
+              <strong>Colomer Hub</strong>
+            </div>
+            <div class="screen-body">
+              <div class="metric-strip">
+                <article>
+                  <small>Documentos</small>
+                  <b data-count-docs>18</b>
+                  <em>recibidos</em>
+                </article>
+                <article>
+                  <small>Pendientes</small>
+                  <b>5</b>
+                  <em>por revisar</em>
+                </article>
+                <article>
+                  <small>Validación</small>
+                  <b>92%</b>
+                  <em>últimos 30 días</em>
+                </article>
+              </div>
+
+              <div class="workflow-card active">
+                <span class="status-dot ok"></span>
+                <div>
+                  <strong>Factura proveedor · recibida</strong>
+                  <p>Clasificada como gasto deducible · pendiente de revisión profesional.</p>
+                </div>
+                <small>hoy</small>
+              </div>
+              <div class="workflow-card">
+                <span class="status-dot warn"></span>
+                <div>
+                  <strong>Modelo 303 · próximo vencimiento</strong>
+                  <p>Recordatorio enviado al cliente con documentación pendiente.</p>
+                </div>
+                <small>8 días</small>
+              </div>
+              <div class="workflow-card">
+                <span class="status-dot blue"></span>
+                <div>
+                  <strong>Lead web · nueva valoración</strong>
+                  <p>Solicitud recibida desde la web y creada en bandeja interna.</p>
+                </div>
+                <small>nuevo</small>
+              </div>
+            </div>
+          </div>
+          <div class="floating-badge">
+            <b>Área privada</b>
+            <span>Clientes, documentos, avisos y seguimiento en un solo lugar.</span>
+          </div>
+        </aside>
       </div>
     </section>
 
-    <section class="logos-strip" aria-label="Ámbitos de trabajo">
-      <span>Empresas</span>
-      <span>Autónomos</span>
-      <span>Pymes</span>
-      <span>Sociedades</span>
-      <span>Profesionales</span>
-    </section>
-
-    <section class="section section-white" id="servicios">
-      <div class="section-head reveal">
-        <p class="eyebrow">Servicios</p>
-        <h2>Asesoramiento completo para que la gestión no frene el negocio.</h2>
+    <section class="section section-deep">
+      <div class="container split-intro reveal">
+        <div>
+          <p class="eyebrow">Web pública + Hub privado</p>
+          <h2>La web genera confianza. El Hub ordena la relación con el cliente.</h2>
+        </div>
         <p>
-          Una estructura clara de servicios, orientada a resolver obligaciones, anticipar vencimientos
-          y mantener la información importante siempre accesible.
+          Esta demo muestra cómo podría funcionar una presencia digital completa: una web sobria para captar y explicar servicios, conectada con un área privada donde el equipo puede gestionar leads, documentos, clientes, avisos y tareas.
         </p>
       </div>
 
-      <div class="service-grid">
+      <div class="container value-grid">
+        <article class="value-card reveal">
+          <span>01</span>
+          <h3>Imagen premium</h3>
+          <p>Una web con tono profesional, servicios claros y llamadas a la acción orientadas a empresas, autónomos y pymes.</p>
+        </article>
+        <article class="value-card reveal delay-1">
+          <span>02</span>
+          <h3>Captación ordenada</h3>
+          <p>Los formularios no se pierden: se convierten en oportunidades visibles dentro del Hub interno.</p>
+        </article>
+        <article class="value-card reveal delay-2">
+          <span>03</span>
+          <h3>Trabajo documental</h3>
+          <p>Subida de documentos, estados, validación asistida y trazabilidad básica para reducir correos dispersos.</p>
+        </article>
+      </div>
+    </section>
+
+    <section id="servicios" class="section services-section">
+      <div class="container section-head reveal">
+        <p class="eyebrow">Servicios principales</p>
+        <h2>Asesoramiento integral con una experiencia digital más cómoda.</h2>
+      </div>
+      <div class="container services-grid">
         <article class="service-card reveal">
-          <span class="icon">01</span>
-          <h3>Fiscal</h3>
-          <p>Presentación de impuestos, planificación, modelos periódicos, requerimientos y seguimiento de obligaciones.</p>
-          <a href="#diagnostico">Consultar fiscalidad</a>
+          <i>01</i><h3>Asesoría fiscal</h3>
+          <p>Planificación, impuestos, declaraciones, modelos trimestrales y acompañamiento tributario.</p>
+          <a href="#diagnostico">Solicitar valoración</a>
         </article>
         <article class="service-card reveal delay-1">
-          <span class="icon">02</span>
-          <h3>Laboral</h3>
-          <p>Nóminas, contratos, altas, bajas, seguros sociales, incidencias y apoyo en la gestión del equipo.</p>
-          <a href="#diagnostico">Consultar laboral</a>
+          <i>02</i><h3>Asesoría laboral</h3>
+          <p>Nóminas, contratos, Seguridad Social, altas, bajas y asesoramiento laboral para empresas.</p>
+          <a href="#diagnostico">Consultar servicio</a>
         </article>
         <article class="service-card reveal delay-2">
-          <span class="icon">03</span>
-          <h3>Contable</h3>
-          <p>Contabilidad, cierres, balances, control documental y preparación de información para tomar decisiones.</p>
-          <a href="#diagnostico">Consultar contabilidad</a>
+          <i>03</i><h3>Contabilidad</h3>
+          <p>Gestión contable, cierres, balances, reporting y control documental para dirección.</p>
+          <a href="#diagnostico">Ver opciones</a>
         </article>
-        <article class="service-card reveal delay-3">
-          <span class="icon">04</span>
-          <h3>Mercantil</h3>
-          <p>Sociedades, libros, actas, trámites mercantiles y acompañamiento documental en procesos corporativos.</p>
-          <a href="#diagnostico">Consultar mercantil</a>
+        <article class="service-card reveal">
+          <i>04</i><h3>Mercantil</h3>
+          <p>Sociedades, acuerdos, trámites y acompañamiento jurídico-mercantil para negocio.</p>
+          <a href="#diagnostico">Pedir información</a>
+        </article>
+        <article class="service-card reveal delay-1">
+          <i>05</i><h3>Empresas</h3>
+          <p>Asesoramiento recurrente para empresas que necesitan orden, anticipación y seguimiento.</p>
+          <a href="#diagnostico">Hablar con Colomer</a>
+        </article>
+        <article class="service-card reveal delay-2">
+          <i>06</i><h3>Autónomos y pymes</h3>
+          <p>Gestión fiscal, laboral y contable adaptada a negocios que quieren ganar control.</p>
+          <a href="#diagnostico">Empezar consulta</a>
         </article>
       </div>
     </section>
 
-    <section class="section split-section" id="metodo">
-      <div class="split-copy reveal">
-        <p class="eyebrow">Método de trabajo</p>
-        <h2>Menos documentos dispersos. Más control en cada paso.</h2>
-        <p>
-          El valor no está solo en presentar modelos o resolver trámites. Está en crear una relación ordenada:
-          qué falta, qué está recibido, qué está revisado y qué requiere acción.
-        </p>
-        <a class="btn btn-primary" href="#hub">Ver cómo funciona el Hub</a>
-      </div>
+    <section id="metodo" class="section section-deep">
+      <div class="container method-grid">
+        <div class="method-copy reveal">
+          <p class="eyebrow">Cómo funcionaría</p>
+          <h2>Un recorrido demostrativo de cliente a equipo.</h2>
+          <p>
+            La demo no solo enseña pantallas. Simula el flujo: contacto desde la web, creación de lead en el Hub, subida de documentos, lectura asistida y cambio de estado por parte del equipo.
+          </p>
+          <a class="btn btn-outline" href="hub.html">Abrir Hub premium demo</a>
+        </div>
 
-      <div class="process-list reveal delay-1">
-        <div class="process-item">
-          <span>1</span>
-          <div>
-            <h3>Escuchamos y ordenamos</h3>
-            <p>Identificamos situación, obligaciones, volumen documental y prioridades.</p>
+        <div class="journey reveal delay-1">
+          <div class="journey-step">
+            <span>1</span><strong>Solicitud web</strong><p>El visitante pide una primera valoración.</p>
           </div>
-        </div>
-        <div class="process-item">
-          <span>2</span>
-          <div>
-            <h3>Centralizamos documentación</h3>
-            <p>El cliente sube información y el equipo puede revisar, solicitar cambios y marcar estados.</p>
+          <div class="journey-step">
+            <span>2</span><strong>Lead en Hub</strong><p>La solicitud aparece en la bandeja interna.</p>
           </div>
-        </div>
-        <div class="process-item">
-          <span>3</span>
-          <div>
-            <h3>Seguimos vencimientos</h3>
-            <p>Calendario, avisos y tareas para reducir urgencias y pérdidas de información.</p>
+          <div class="journey-step">
+            <span>3</span><strong>Cliente activo</strong><p>Accede a su espacio privado.</p>
           </div>
-        </div>
-        <div class="process-item">
-          <span>4</span>
-          <div>
-            <h3>Acompañamos decisiones</h3>
-            <p>Información más clara para anticipar escenarios y actuar con más seguridad.</p>
+          <div class="journey-step">
+            <span>4</span><strong>Documento recibido</strong><p>Factura, nómina, contrato o justificante.</p>
+          </div>
+          <div class="journey-step">
+            <span>5</span><strong>Revisión profesional</strong><p>El equipo valida, solicita corrección o finaliza.</p>
           </div>
         </div>
       </div>
     </section>
 
-    <section class="section hub-section" id="hub">
-      <div class="hub-copy reveal">
-        <p class="eyebrow gold">Colomer Hub</p>
-        <h2>Una zona privada para trabajar mejor con clientes.</h2>
-        <p>
-          El Hub es una demostración de cómo Colomer podría ofrecer a sus clientes un espacio privado
-          para subir documentos, consultar estados, revisar avisos y comunicarse con el despacho.
-        </p>
-
-        <div class="value-cards">
-          <div>
-            <b>Cliente</b>
-            <span>Sube documentos, consulta estados y ve vencimientos.</span>
-          </div>
-          <div>
-            <b>Equipo Colomer</b>
-            <span>Gestiona leads, documentación, tareas y revisión asistida.</span>
-          </div>
-        </div>
-
-        <a class="btn btn-gold btn-large" href="hub.html">Entrar en la demo del Hub</a>
+    <section id="area-cliente" class="section hub-preview-section">
+      <div class="container section-head reveal">
+        <p class="eyebrow">Área cliente</p>
+        <h2>Un espacio privado para evitar documentación perdida.</h2>
+        <p>El cliente ve qué ha enviado, qué está pendiente, qué se ha validado y qué necesita revisar.</p>
       </div>
 
-      <div class="hub-screen reveal delay-1">
-        <div class="hub-sidebar">
-          <b>Colomer Hub</b>
-          <span class="active">Dashboard</span>
-          <span>Clientes</span>
-          <span>Documentos</span>
-          <span>IA asistida</span>
-          <span>Vencimientos</span>
-        </div>
-        <div class="hub-main-preview">
-          <div class="stat-grid">
-            <div><b>18</b><span>Documentos</span></div>
-            <div><b>5</b><span>Pendientes</span></div>
-            <div><b>12</b><span>Vencimientos</span></div>
+      <div class="container hub-preview-grid">
+        <article class="preview-panel reveal">
+          <div class="panel-title">
+            <span class="icon-ring">↗</span>
+            <div>
+              <h3>Panel del cliente</h3>
+              <p>Documentos, vencimientos, avisos y mensajes.</p>
+            </div>
           </div>
-          <div class="timeline-card">
-            <h3>Actividad reciente</h3>
-            <p><span class="status-dot ok"></span>IVA trimestral revisado</p>
-            <p><span class="status-dot warn"></span>Falta justificante bancario</p>
-            <p><span class="status-dot info"></span>Nuevo lead desde la web</p>
+          <div class="client-list">
+            <div><b>Factura trimestre Q2</b><span class="tag blue">Recibida</span></div>
+            <div><b>Contrato laboral</b><span class="tag amber">Falta información</span></div>
+            <div><b>Modelo 303</b><span class="tag green">Validado</span></div>
           </div>
-        </div>
+        </article>
+
+        <article class="preview-panel reveal delay-1">
+          <div class="panel-title">
+            <span class="icon-ring">✓</span>
+            <div>
+              <h3>Panel del equipo</h3>
+              <p>Leads, clientes, bandeja documental y tareas.</p>
+            </div>
+          </div>
+          <div class="dashboard-bars">
+            <span style="--w:76%"><b>Documentos revisados</b></span>
+            <span style="--w:58%"><b>Leads contactados</b></span>
+            <span style="--w:91%"><b>Clientes al día</b></span>
+          </div>
+        </article>
       </div>
     </section>
 
-    <section class="section scenario-section" id="diagnostico">
-      <div class="section-head reveal">
-        <p class="eyebrow">Recorrido demostrativo</p>
-        <h2>Prueba el flujo completo: de la web al Hub.</h2>
-        <p>
-          Envía este formulario ficticio y el lead aparecerá dentro del Hub demo, en la zona de equipo.
-          No se envía nada a servidores: todo queda guardado solo en este navegador.
-        </p>
-      </div>
+    <section id="diagnostico" class="section form-section">
+      <div class="container form-grid">
+        <div class="form-copy reveal">
+          <p class="eyebrow">Simulación conectada al Hub</p>
+          <h2>Solicita una primera valoración.</h2>
+          <p>
+            Completa este formulario de demo. Al enviarlo, se creará un lead ficticio dentro del Hub para enseñar el flujo completo a Colomer.
+          </p>
+          <div class="note-card">
+            <strong>Demo segura</strong>
+            <span>No envíes datos reales. Esta maqueta usa datos ficticios guardados solo en el navegador.</span>
+          </div>
+        </div>
 
-      <div class="scenario-grid">
-        <form class="premium-form reveal" id="leadForm">
-          <h3>Solicitar diagnóstico inicial</h3>
-          <label>
-            Nombre y empresa
-            <input type="text" name="name" placeholder="Ej. Empresa Demo S.L." required>
+        <form class="premium-form reveal delay-1" data-lead-form>
+          <label>Nombre y empresa
+            <input name="name" placeholder="Ej. Marta Soler · Nova Retail" required>
           </label>
-          <label>
-            Email
-            <input type="email" name="email" placeholder="contacto@empresa-demo.es" required>
+          <label>Email
+            <input type="email" name="email" placeholder="marta@empresa.es" required>
           </label>
-          <label>
-            Tipo de consulta
+          <label>Servicio de interés
             <select name="service" required>
-              <option value="">Seleccionar</option>
-              <option>Fiscal</option>
-              <option>Laboral</option>
-              <option>Contable</option>
+              <option value="">Seleccionar servicio</option>
+              <option>Asesoría fiscal</option>
+              <option>Asesoría laboral</option>
+              <option>Contabilidad</option>
               <option>Mercantil</option>
-              <option>Alta como nuevo cliente</option>
+              <option>Autónomos y pymes</option>
+              <option>Empresas</option>
             </select>
           </label>
-          <label>
-            ¿Qué necesitas ordenar?
-            <textarea name="message" rows="4" placeholder="Cuéntanos brevemente la situación"></textarea>
+          <label>¿Qué necesitas ordenar o mejorar?
+            <textarea name="message" rows="4" placeholder="Ej. Queremos centralizar documentos y reducir correos sueltos."></textarea>
           </label>
-          <button class="btn btn-primary btn-full" type="submit">Enviar solicitud demo</button>
-          <p class="form-note">Demo: los datos se guardan localmente para mostrarlos en el Hub.</p>
+          <button class="btn btn-gold full" type="submit">Enviar solicitud demo</button>
+          <p class="form-result" data-form-result></p>
         </form>
-
-        <div class="journey-card reveal delay-1">
-          <h3>Qué verá Colomer dentro del Hub</h3>
-          <ol class="journey">
-            <li><span>01</span><b>Nuevo lead recibido</b><em>Origen: formulario web</em></li>
-            <li><span>02</span><b>Clasificación automática</b><em>Fiscal, laboral, contable o mercantil</em></li>
-            <li><span>03</span><b>Tarea interna</b><em>Revisar y contactar con el cliente</em></li>
-            <li><span>04</span><b>Seguimiento</b><em>Convertir en cliente o cerrar consulta</em></li>
-          </ol>
-          <a class="btn btn-ghost btn-full" href="hub.html#leads">Abrir Hub y revisar leads</a>
-        </div>
-      </div>
-    </section>
-
-    <section class="section section-white compact-cta" id="contacto">
-      <div class="cta-panel reveal">
-        <div>
-          <p class="eyebrow">Contacto</p>
-          <h2>Una asesoría más accesible, ordenada y preparada para crecer.</h2>
-          <p>
-            Esta pantalla representa cómo podría presentarse Colomer con una web profesional
-            conectada a una zona privada para clientes.
-          </p>
-        </div>
-        <div class="cta-actions">
-          <a class="btn btn-primary btn-large" href="#diagnostico">Solicitar valoración</a>
-          <a class="btn btn-ghost btn-large" href="hub.html">Acceso clientes demo</a>
-        </div>
       </div>
     </section>
   </main>
 
-  <footer class="footer">
-    <div>
-      <a class="brand brand-footer" href="#top">
-        <span class="brand-mark">C</span>
-        <span>
-          <strong>Colomer & Asociados</strong>
-          <small>Demo web + Hub premium</small>
-        </span>
-      </a>
-      <p>Demo visual y funcional con datos ficticios. No sustituye una versión real con seguridad, base de datos y revisión legal.</p>
-    </div>
-    <div class="footer-links">
-      <a href="#servicios">Servicios</a>
-      <a href="#hub">Colomer Hub</a>
-      <a href="hub.html">Área cliente</a>
+  <footer class="footer-premium">
+    <div class="container footer-grid">
+      <div>
+        <a class="brand" href="#inicio">
+          <span class="brand-mark">C</span>
+          <span><strong>Colomer & Asociados</strong><em>Asesores de empresas</em></span>
+        </a>
+        <p>Demo visual y funcional para presentar una web premium conectada con un Hub operativo.</p>
+      </div>
+      <div>
+        <strong>Demo Hub</strong>
+        <p>Email: demo@colomerhub.es<br>Clave: demo2026</p>
+      </div>
+      <div>
+        <strong>Advertencia</strong>
+        <p>Demo con datos ficticios y localStorage. Para producción haría falta login real, base de datos, seguridad, backups y revisión RGPD.</p>
+      </div>
     </div>
   </footer>
 
-  <div class="toast" id="toast" role="status" aria-live="polite"></div>
-  <script src="app.js?v=v3-2-final"></script>
+  <div class="expired-modal" data-expired-modal aria-hidden="true">
+    <div class="expired-card">
+      <p class="eyebrow">Demo finalizada</p>
+      <h2>La prueba web de 15 días ha terminado.</h2>
+      <p>Para mantener activa la demo, conectar formularios reales o publicar la versión profesional, se debe activar la siguiente fase del proyecto.</p>
+      <div class="hero-actions">
+        <button class="btn btn-gold" data-reset-demo>Reiniciar demo local</button>
+        <a class="btn btn-glass" href="hub.html?resetdemo=1">Ver Hub en modo demo</a>
+      </div>
+      <small>En producción, el control se realizaría con usuario, licencia y base de datos.</small>
+    </div>
+  </div>
 </body>
 </html>
