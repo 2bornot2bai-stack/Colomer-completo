@@ -1,0 +1,276 @@
+<!doctype html>
+<html lang="es">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>Colomer Hub · Demo operativa 15 días</title>
+  <meta name="description" content="Demo premium de Hub operativo para Colomer & Asociados con periodo de demostración de 15 días.">
+  <meta name="theme-color" content="#000712">
+  <link rel="stylesheet" href="styles.css">
+</head>
+<body class="hub-page">
+  <div class="demo-topbar hub-bar" data-trial-banner>
+    <span class="pulse-dot"></span>
+    <strong>Colomer Hub · Demo 15 días</strong>
+    <span data-trial-text>Calculando periodo de demostración…</span>
+  </div>
+
+  <main class="hub-shell">
+    <section class="login-view" data-login-view>
+      <div class="login-brand reveal">
+        <a class="brand" href="index.html">
+          <span class="brand-mark">C</span>
+          <span>
+            <strong>Colomer Hub</strong>
+            <em>Área privada demo</em>
+          </span>
+        </a>
+        <h1>Accede a una muestra del área privada para clientes y equipo.</h1>
+        <p>
+          Demo funcional con datos ficticios. El periodo se activa al primer acceso y dura 15 días en este navegador.
+        </p>
+        <div class="credentials-box">
+          <strong>Credenciales demo</strong>
+          <span>Email: <code>demo@colomerhub.es</code></span>
+          <span>Clave: <code>demo2026</code></span>
+        </div>
+        <a href="index.html" class="text-link">← Volver a la web premium</a>
+      </div>
+
+      <form class="login-card reveal delay-1" data-login-form>
+        <span class="eyebrow">Acceso privado</span>
+        <h2>Entrar al Hub</h2>
+        <label>
+          Email
+          <input type="email" name="email" value="demo@colomerhub.es" required>
+        </label>
+        <label>
+          Contraseña
+          <input type="password" name="password" value="demo2026" required>
+        </label>
+        <button class="btn btn-gold" type="submit">Acceder a la demo</button>
+        <p class="form-note">
+          Acceso simulado con localStorage. No es un login real ni debe usarse con datos sensibles.
+        </p>
+      </form>
+    </section>
+
+    <section class="app-view" data-app-view hidden>
+      <aside class="sidebar">
+        <a class="brand hub-brand" href="index.html">
+          <span class="brand-mark">C</span>
+          <span>
+            <strong>Colomer Hub</strong>
+            <em>Demo operativa</em>
+          </span>
+        </a>
+
+        <nav class="side-nav" aria-label="Navegación Hub">
+          <button class="active" type="button" data-tab-button="dashboard">Panel</button>
+          <button type="button" data-tab-button="clientes">Clientes</button>
+          <button type="button" data-tab-button="documentos">Documentos</button>
+          <button type="button" data-tab-button="avisos">Avisos</button>
+          <button type="button" data-tab-button="config">Demo y seguridad</button>
+        </nav>
+
+        <div class="sidebar-foot">
+          <a href="index.html">Web premium</a>
+          <button type="button" data-logout>Salir</button>
+        </div>
+      </aside>
+
+      <div class="hub-main">
+        <header class="hub-header">
+          <div>
+            <span class="eyebrow">Área privada</span>
+            <h1>Panel operativo Colomer</h1>
+          </div>
+          <div class="hub-actions">
+            <span class="trial-pill" data-trial-pill>Demo activa</span>
+            <button class="btn btn-small btn-ghost-dark" type="button" data-open-upload>Subir documento</button>
+          </div>
+        </header>
+
+        <section class="hub-tab active" data-tab="dashboard">
+          <div class="kpi-grid">
+            <article class="kpi-card"><span>Clientes activos</span><strong data-kpi-clients>18</strong><em>demo</em></article>
+            <article class="kpi-card"><span>Documentos recibidos</span><strong data-kpi-docs>42</strong><em>este mes</em></article>
+            <article class="kpi-card"><span>Pendientes</span><strong data-kpi-pending>12</strong><em>revisión</em></article>
+            <article class="kpi-card"><span>Ahorro estimado</span><strong>8h</strong><em>mensuales</em></article>
+          </div>
+
+          <div class="hub-grid">
+            <article class="hub-card wide">
+              <div class="card-title">
+                <div><span class="eyebrow">Bandeja</span><h2>Últimos documentos</h2></div>
+                <button class="link-button" type="button" data-tab-link="documentos">Ver todos</button>
+              </div>
+              <div class="table-wrap">
+                <table class="data-table">
+                  <thead>
+                    <tr><th>Cliente</th><th>Documento</th><th>Estado</th><th>Fecha</th></tr>
+                  </thead>
+                  <tbody data-doc-table="dashboard"></tbody>
+                </table>
+              </div>
+            </article>
+
+            <article class="hub-card">
+              <span class="eyebrow">Actividad</span>
+              <h2>Seguimiento interno</h2>
+              <div class="activity-list" data-activity-list></div>
+            </article>
+          </div>
+        </section>
+
+        <section class="hub-tab" data-tab="clientes">
+          <div class="card-title">
+            <div><span class="eyebrow">Clientes</span><h2>Fichas de cliente demo</h2></div>
+          </div>
+          <div class="client-grid" data-client-grid></div>
+        </section>
+
+        <section class="hub-tab" data-tab="documentos">
+          <article class="hub-card">
+            <div class="card-title">
+              <div><span class="eyebrow">Documentos</span><h2>Bandeja documental</h2></div>
+              <button class="btn btn-small btn-gold" type="button" data-open-upload>Nuevo documento</button>
+            </div>
+            <div class="filters">
+              <button class="active" type="button" data-filter="all">Todos</button>
+              <button type="button" data-filter="pendiente">Pendientes</button>
+              <button type="button" data-filter="validado">Validados</button>
+              <button type="button" data-filter="falta">Falta información</button>
+            </div>
+            <div class="table-wrap">
+              <table class="data-table">
+                <thead>
+                  <tr><th>Cliente</th><th>Tipo</th><th>Documento</th><th>Estado</th><th>Fecha</th><th>Responsable</th></tr>
+                </thead>
+                <tbody data-doc-table="full"></tbody>
+              </table>
+            </div>
+          </article>
+        </section>
+
+        <section class="hub-tab" data-tab="avisos">
+          <div class="hub-grid">
+            <article class="hub-card">
+              <span class="eyebrow">Avisos</span>
+              <h2>Mensajes al cliente</h2>
+              <div class="notice-list">
+                <div class="notice"><strong>Recordatorio trimestral</strong><span>Subir facturas antes del día 12.</span></div>
+                <div class="notice"><strong>Documentación incompleta</strong><span>Falta certificado bancario para Proyectos Levante.</span></div>
+                <div class="notice"><strong>Validación contable</strong><span>García Solar SL tiene documentos validados.</span></div>
+              </div>
+            </article>
+
+            <article class="hub-card">
+              <span class="eyebrow">Mensaje rápido</span>
+              <h2>Enviar aviso simulado</h2>
+              <form data-notice-form>
+                <label>Cliente
+                  <select name="client">
+                    <option>García Solar SL</option>
+                    <option>López Retail</option>
+                    <option>Natura Clinic</option>
+                    <option>Proyectos Levante</option>
+                  </select>
+                </label>
+                <label>Mensaje
+                  <textarea name="message" rows="4" required placeholder="Ejemplo: Hemos recibido tus facturas y están en revisión."></textarea>
+                </label>
+                <button class="btn btn-gold" type="submit">Guardar aviso demo</button>
+              </form>
+            </article>
+          </div>
+        </section>
+
+        <section class="hub-tab" data-tab="config">
+          <article class="hub-card">
+            <span class="eyebrow">Demo y seguridad</span>
+            <h2>Qué es real en esta demo y qué requiere versión profesional</h2>
+            <div class="security-grid">
+              <div>
+                <h3>Incluido en esta demo</h3>
+                <ul class="feature-list">
+                  <li>Diseño premium responsive.</li>
+                  <li>Navegación de Hub y paneles simulados.</li>
+                  <li>Login demo con localStorage.</li>
+                  <li>Periodo de 15 días por navegador.</li>
+                  <li>Datos ficticios para presentación comercial.</li>
+                </ul>
+              </div>
+              <div>
+                <h3>Necesario en versión real</h3>
+                <ul class="feature-list">
+                  <li>Login seguro con usuarios y roles.</li>
+                  <li>Base de datos y almacenamiento documental.</li>
+                  <li>Cifrado, backups y registros de actividad.</li>
+                  <li>Revisión RGPD, privacidad y contratos.</li>
+                  <li>Hosting, dominio, APIs y costes externos a nombre del cliente.</li>
+                </ul>
+              </div>
+            </div>
+            <div class="warning-box">
+              Esta demo no debe usarse para documentación real. El bloqueo de 15 días es comercial y funciona en el navegador del usuario; no sustituye una licencia ni un control real de acceso.
+            </div>
+            <button class="link-button danger" type="button" data-reset-demo>Reiniciar demo en este navegador</button>
+          </article>
+        </section>
+      </div>
+    </section>
+  </main>
+
+  <dialog class="upload-modal" data-upload-modal>
+    <form method="dialog" class="modal-card" data-upload-form>
+      <button class="modal-close" value="cancel" aria-label="Cerrar">×</button>
+      <span class="eyebrow">Subida documental</span>
+      <h2>Nuevo documento demo</h2>
+      <p class="form-note">El archivo no se sube a ningún servidor. Solo se guarda el nombre en este navegador.</p>
+      <label>Cliente
+        <select name="client" required>
+          <option>García Solar SL</option>
+          <option>López Retail</option>
+          <option>Natura Clinic</option>
+          <option>Proyectos Levante</option>
+          <option>Autónomo Marta Ruiz</option>
+        </select>
+      </label>
+      <label>Tipo de documento
+        <select name="type" required>
+          <option>Factura</option>
+          <option>Nómina</option>
+          <option>Contrato</option>
+          <option>Modelo fiscal</option>
+          <option>Justificante bancario</option>
+        </select>
+      </label>
+      <label>Archivo demo
+        <input type="file" name="file" aria-describedby="file-help">
+        <span id="file-help" class="form-note">No se sube ni se comparte. Solo se muestra el nombre en la bandeja.</span>
+      </label>
+      <label>Comentario
+        <textarea name="comment" rows="3" placeholder="Añadir observaciones internas."></textarea>
+      </label>
+      <button class="btn btn-gold" value="default" type="submit">Añadir a bandeja demo</button>
+    </form>
+  </dialog>
+
+  <div class="expired-overlay" data-expired-overlay hidden>
+    <div class="expired-card">
+      <span class="eyebrow">Demo finalizada</span>
+      <h2>El periodo de demostración de 15 días ha terminado.</h2>
+      <p>
+        Para continuar, sería necesario activar una versión real con acceso seguro, base de datos,
+        almacenamiento documental y configuración profesional.
+      </p>
+      <a class="btn btn-gold" href="index.html#contacto">Solicitar versión real</a>
+    </div>
+  </div>
+
+  <div class="toast" data-toast role="status" aria-live="polite"></div>
+
+  <script src="app.js"></script>
+</body>
+</html>
